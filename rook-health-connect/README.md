@@ -35,39 +35,7 @@ SDK.
 
 ### Android configuration
 
-In your values folder create a **health_permissions.xml** file with the following content:
-
-```text
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <array name="health_permissions">
-        <item>androidx.health.permission.SleepSession.READ</item>
-        <item>androidx.health.permission.Steps.READ</item>
-        <item>androidx.health.permission.Distance.READ</item>
-        <item>androidx.health.permission.FloorsClimbed.READ</item>
-        <item>androidx.health.permission.ElevationGained.READ</item>
-        <item>androidx.health.permission.OxygenSaturation.READ</item>
-        <item>androidx.health.permission.Vo2Max.READ</item>
-        <item>androidx.health.permission.TotalCaloriesBurned.READ</item>
-        <item>androidx.health.permission.ActiveCaloriesBurned.READ</item>
-        <item>androidx.health.permission.HeartRate.READ</item>
-        <item>androidx.health.permission.RestingHeartRate.READ</item>
-        <item>androidx.health.permission.HeartRateVariabilityRmssd.READ</item>
-        <item>androidx.health.permission.ExerciseSession.READ</item>
-        <item>androidx.health.permission.Steps.READ</item>
-        <item>androidx.health.permission.Speed.READ</item>
-        <item>androidx.health.permission.StepsCadence.READ</item>
-        <item>androidx.health.permission.Weight.READ</item>
-        <item>androidx.health.permission.Height.READ</item>
-        <item>androidx.health.permission.BloodGlucose.READ</item>
-        <item>androidx.health.permission.BloodPressure.READ</item>
-        <item>androidx.health.permission.Hydration.READ</item>
-        <item>androidx.health.permission.BodyTemperature.READ</item>
-    </array>
-</resources>
-```
-
-Then in your **AndroidManifest.xml** add a query for Health Connect
+In your **AndroidManifest.xml** add a query for Health Connect
 
 ```xml
 
@@ -78,16 +46,38 @@ Then in your **AndroidManifest.xml** add a query for Health Connect
 </manifest>
 ```
 
-In the same manifest, inside the Activity that you use to display your app's privacy policy add a
-reference to `health_permissions`
-and an intent filter for the Health Connect permissions action:
+Then declare the health permissions used by this SDK:
+
+```text
+<uses-permission android:name="android.permission.health.READ_SLEEP" />
+<uses-permission android:name="android.permission.health.READ_STEPS" />
+<uses-permission android:name="android.permission.health.READ_DISTANCE" />
+<uses-permission android:name="android.permission.health.READ_FLOORS_CLIMBED" />
+<uses-permission android:name="android.permission.health.READ_ELEVATION_GAINED" />
+<uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION" />
+<uses-permission android:name="android.permission.health.READ_VO2_MAX" />
+<uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED" />
+<uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED" />
+<uses-permission android:name="android.permission.health.READ_HEART_RATE" />
+<uses-permission android:name="android.permission.health.READ_RESTING_HEART_RATE" />
+<uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
+<uses-permission android:name="android.permission.health.READ_EXERCISE" />
+<uses-permission android:name="android.permission.health.READ_SPEED" />
+<uses-permission android:name="android.permission.health.READ_WEIGHT" />
+<uses-permission android:name="android.permission.health.READ_HEIGHT" />
+<uses-permission android:name="android.permission.health.READ_BLOOD_GLUCOSE" />
+<uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE" />
+<uses-permission android:name="android.permission.health.READ_HYDRATION" />
+<uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE" />
+```
+
+Finally, inside the Activity that you use to display your app's privacy policy add an
+intent filter for the Health Connect permissions action:
 
 ```xml
 
 <activity android:name=".ui.health_connect.HCPrivacyPolicyActivity" android:enabled="true"
     android:exported="true">
-
-    <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
 
     <intent-filter>
         <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
@@ -237,8 +227,8 @@ day and cannot be older than 29 days. See the examples below:
 | 2023-01-08   | 2022-11-01    | No, the date is older than 29 days |
 | 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old        |
 
-To get health data call `get_data_type` and provide a `ZonedDateTime` instance of the day your want to
-retrieve the data from.
+To get health data call `get_data_type` and provide a `ZonedDateTime` instance of the day your want
+to retrieve the data from.
 
 For example if you want to get yesterday's sleep summary call `getSleepSummary`. It will return
 an `SleepSummary` instance or thrown an exception if an error happens
@@ -278,8 +268,8 @@ summary from yesterday (`2023-01-09`) with `getSleepSummary`, gets the summary a
 backend.
 
 Then the user forgets to open the app until `2023-01-15`, then you'll call `getSleepSummaryLastDate`
-it will return `2023-01-09` in a ZonedDateTime instance. Now, in a loop, you can recover data from the
-days the user did not open the app (`2023-01-10` to `2023-01-14`).
+it will return `2023-01-09` in a ZonedDateTime instance. Now, in a loop, you can recover data from
+the days the user did not open the app (`2023-01-10` to `2023-01-14`).
 
 An example using sleep summaries is detailed below:
 
