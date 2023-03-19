@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.3.1
+
+* Fixed logs duplication
+* Added sourceOfData to:
+    * SleepSummary
+    * PhysicalSummary
+    * PhysicalEvent
+    * BodySummary
+* Changed name of the following classes and properties:
+    * `FloorsClimbedGranularDataFloors` to `FloorsClimbedGranularData`
+    * `BloodPressureDayAvgSystolicDiastolicBp` to `BloodPressureSystolicDiastolic`
+    * `BloodPressureSystolicDiastolicBp` to `BloodPressureSystolicDiastolic`
+    * `BloodPressureGranularDataSystolicDiastolicBp` to `BloodPressureGranularDataSystolicDiastolic`
+    * `BloodPressureGranularDataSystolicDiastolicBp.bloodPressureSystolicDiastolicBp`
+      to `BloodPressureGranularDataSystolicDiastolic.bloodPressureSystolicDiastolic`
+    * `BodySummary.bloodPressureDayAvgSystolicDiastolicBp` to `BodySummary.bloodPressureDayAvgSystolicDiastolic`
+    * `BodySummary.bloodPressureGranularDataSystolicDiastolicBp`
+      to `BodySummary.bloodPressureGranularDataSystolicDiastolic`
+    * `PhysicalEvent.floorsClimbedGranularDataFloors` to `PhysicalEvent.floorsClimbedGranularData`
+    * `PhysicalSummary.floorsClimbedGranularDataFloors` to `PhysicalSummary.floorsClimbedGranularData`
+
+## 0.3.0
+
+* Updated rook-auth to 0.3.1
+
 ## 0.1.0
 
 * Updated Health Connect
