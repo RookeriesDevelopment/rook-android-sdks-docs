@@ -1,17 +1,21 @@
-# Rook Transmission
 
-This SDK allows apps to send health data to RookConnect servers.
+
+# Rook Transmission SDK
+
+This SDK allows apps to transmit Health Data to the ROOK server.
 
 ## Features
 
-* Send sleep summaries
-* Send physical summaries
-* Send physical events
-* Send body summaries
+- Upload sleep summaries
+- Upload physical summaries
+- Upload body summaries
+- Upload physical events
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-transmission?color=%23F44336)
+[https://img.shields.io/maven-central/v/com.rookmotion.android/rook-transmission?color=%23F44336](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-transmission?color=%23F44336)
+
+Maven Central
 
 Add the following to your dependencies (app level build.gradle):
 
@@ -21,9 +25,7 @@ implementation 'com.rookmotion.android:rook-transmission:version'
 
 ## Getting started
 
-To get permission of usage you'll need to install and configure
-the [rook-auth](https://mvnrepository.com/artifact/com.rookmotion.android/rook-auth)
-SDK.
+To get permission for usage you’ll need to install and configure the [rook-auth](https://mvnrepository.com/artifact/com.rookmotion.android/rook-auth) SDK.
 
 ### Logging
 
@@ -37,104 +39,53 @@ RookTransmissionManager(logLevel = "ADVANCED")
 
 Available levels:
 
-* "ADVANCED" -> All logs from API. All logs from SDK.
-* "BASIC" -> Basic logs from API. All logs from SDK.
-* "NONE" -> No logs.
+- “ADVANCED” -> All logs from API. All logs from SDK.
+- “BASIC” -> Basic logs from API. All logs from SDK.
+- “NONE” -> No logs.
 
 ## Usage
 
-Create an instance of `RookTransmissionManager` providing a context, a URL without https a userID
-and your clientUUID and clientPassword:
+Create an instance of `RookTransmissionManager` providing 
+
+- A Context
+- An [apiURL](https://docs.tryrook.io/docs/Definitions#api_url) without the HTTPS part, only the api+domain like “api2.rookmotion.dev"
+- A [userID](https://docs.tryrook.io/docs/Definitions#user_id)
+    - The userID must be registered previously to transmit the data using [rook_users](https://mvnrepository.com/artifact/com.rookmotion.android/rook-users) SDK.
+- A [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
+- A [clientPassword](https://docsbeta.tryrook.io/docs/Definitions#client_password)
 
 ```kotlin
-val manager = RookTransmissionManager(
-    context,
-    "api2.rookmotion.review",
-    USER_ID,
-    CLIENT_UUID,
-    CLIENT_PASSWORD
-)
+val manager = RookTransmissionManager(    context,    "api2.rookmotion.dev",    USER_ID,    CLIENT_UUID,    CLIENT_PASSWORD)
 ```
-
-* userID can be obtained with
-  our [rook_users](https://mvnrepository.com/artifact/com.rookmotion.android/rook-users) SDK.
 
 ### Enqueueing
 
-There are multiple functions to enqueue health data they follow the convention `enqueue_data_type`
-when calling any of these functions you'll need to provide an instance of the required data type.
+There are multiple functions to enqueue health data they follow the convention `enqueue_data_type` when calling any of these functions you’ll need to provide an instance of the required data type.
 
-Enqueued data will be stored in an internal Database until is synced.
+Enqueued data will be stored in an internal database until it is uploaded.
 
 To enqueue a Sleep Summary call `enqueueSleepSummary` and provide an instance of `SleepSummaryItem`:
 
 ```kotlin
-fun enqueueSleep() {
-    scope.launch {
-        try {
-            val item = SleepSummaryItem(
-                sourceOfData = "Health Connect",
-                dateTime = "2023-01-06T22:00:22.065Z",
-                sleepStartDatetime = "2023-01-06T22:00:22.065Z",
-                sleepEndDatetime = "2023-01-07T12:00:04.013Z",
-                sleepDate = "2023-01-07",
-                sleepDurationSeconds = 64800,
-                timeInBedSeconds = 64800,
-            )
-
-            manager.enqueueSleepSummary(item)
-
-            // Success
-        } catch (e: Exception) {
-            // Manage error
-        }
-    }
-}
+fun enqueueSleep() {    scope.launch {        try {            val item = SleepSummaryItem(                sourceOfData = "Health Connect",                dateTime = "2023-01-06T22:00:22.065Z",                sleepStartDatetime = "2023-01-06T22:00:22.065Z",                sleepEndDatetime = "2023-01-07T12:00:04.013Z",                sleepDate = "2023-01-07",                sleepDurationSeconds = 64800,                timeInBedSeconds = 64800,            )            manager.enqueueSleepSummary(item)            // Success        } catch (e: Exception) {            // Manage error        }    }}
 ```
 
-Remember to send the dates and date times with ISO-8601 format and UTC timezone. (rook_extraction
-SDKs
-like [rook_health_connect](https://mvnrepository.com/artifact/com.rookmotion.android/rook-health-connect)
-already deliver
-the date with ISO-8601 format UTC timezone).
+Remember to send the dates and datetimes in ISO-8601 format and UTC timezone. (rook_extraction SDKs like [rook_health_connect](https://mvnrepository.com/artifact/com.rookmotion.android/rook-health-connect) already deliver the date with ISO-8601 format UTC timezone).
 
 ### Clear queue
 
-If you want to clear queued data so it won't be send the next time you perform a sync
-call `clearQueued_data_type`:
+If you want to clear queued data so it won’t be sent the next time you perform a syncAll call `clearQueued_data_type`:
 
 ```kotlin
-fun clearSleepSummaryQueue() {
-    scope.launch {
-        try {
-            manager.clearQueuedSleepSummaries()
-
-            // Success
-        } catch (e: Exception) {
-            // Manage error
-        }
-    }
-}
+fun clearSleepSummaryQueue() {    scope.launch {        try {            manager.clearQueuedSleepSummaries()            // Success        } catch (e: Exception) {            // Manage error        }    }}
 ```
 
 ### Syncing
 
-To sync (send) all enqueued health data call `syncAll`, this will sync all types of data and delete
-them from the internal Database.
+To sync (send) all enqueued health data call `syncAll`, this will sync all types of data and delete them from the internal Database.
 
 ```kotlin
-fun syncAll() {
-    scope.launch {
-        try {
-            manager.syncAll()
-
-            // Success
-        } catch (e: Exception) {
-            // Manage error
-        }
-    }
-}
+fun syncAll() {    scope.launch {        try {            manager.syncAll()            // Success        } catch (e: Exception) {            // Manage error        }    }}
 ```
 
-* You can also sync specific types of data these functions will follow the convention:
-  `sync_data_type`.
+- You can also sync specific types of data these functions will follow the convention: `sync_data_type`.

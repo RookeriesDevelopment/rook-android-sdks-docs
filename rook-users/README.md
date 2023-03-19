@@ -1,10 +1,10 @@
-# Rook Users
+# Rook Users SDK
 
-This SDK allows apps to register their users in our API solutions.
+This SDK allows the [client](https://docs.tryrook.io/docs/Definitions/#client) to register their [Users](https://docs.tryrook.io/docs/Definitions/#User) in ROOK server.
 
 ## Features
 
-* Register users in Health Connect
+* Register Users in Health Connect
 
 ## Installation
 
@@ -46,18 +46,18 @@ Create an instance of `RookUsersManager` providing a context, and URL without ht
 val manager = RookUsersManager(context, "api2.rookmotion.review")
 ```
 
-### Registering users
+### Registering Users
 
-To register a user call `registerRookUser` providing your clientUUID, a userID and a userType. It
+To register a User call `registerRookUser` providing your clientUUID, a userID and a userType. It
 will return an instance of `RookUser`. After a successful registration it will store a `RookUser`
 instance in preferences so the next time you call `registerRookUser` the local value will be
 returned. Unless you provide a different userID, in that case it will behave like the first time.
 
 The `userID` is defined by you, so feel free to use the same ID your app uses to identify it's
-users. If you provide an ID which is already exists in the server it will only store it in
+Users. If you provide an ID which is already exists in the server it will only store it in
 preferences.
 
-The `userType` determines where the user will be created. E.g. if you want to create a user for
+The `userType` determines where the User will be created. E.g. if you want to create a User for
 Health Connect pass `UserType.HEALTH_CONNECT`:
 
 ```kotlin
@@ -74,13 +74,13 @@ fun registerUser() {
 }
 ```
 
-### Removing registered users from preferences
+### Removing registered Users from preferences
 
 This SDK already manages the case were you need to register a different userID (the new userID
 will replace the previous one in preferences).
 
 If you want to manually remove a userID call `removeUserFromPreferences` and provide the type of
-user you want to remove it will return a boolean indicating if the operation was successful.
+User you want to remove it will return a boolean indicating if the operation was successful.
 
 ```kotlin
 fun remove() {
@@ -96,10 +96,10 @@ fun remove() {
 }
 ```
 
-* `removeUserFromPreferences` will only delete from local storage, the user will remain registered
+* `removeUserFromPreferences` will only delete from local storage, the User will remain registered
   on server.
 
 ## Additional information
 
-The first time your users use this SDK they MUST have an active internet connection otherwise
+The first time your Users use this SDK they MUST have an active internet connection otherwise
 the request will fail and the userID won't be registered or stored.

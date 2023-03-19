@@ -1,4 +1,4 @@
-# Rook authorization
+# Rook authorization SDK
 
 This is the main SDK required by all rook SDKs to enable their usage.
 

@@ -1,3 +1,5 @@
+# Changelog
+
 ## 0.2.0
 
 * Added flutter flag to `AuthorizationProvider` constructor, set it to true when using this SDK from

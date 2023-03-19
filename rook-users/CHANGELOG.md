@@ -1,3 +1,5 @@
+# Changelog
+
 ## 0.1.0
 
 * Updated rook-auth to 0.2.0
