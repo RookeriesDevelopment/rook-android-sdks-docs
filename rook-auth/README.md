@@ -38,13 +38,13 @@ Available levels:
 
 You must check authorization every time your app starts or before using other rook SDKs.
 
-1. Create an instance of `AuthorizationProvider` providing a context, and apiUrl without https.
+Create an instance of `AuthorizationProvider` providing a context, and apiUrl without https.
 
 ```kotlin
 val provider = AuthorizationProvider(context, "api.rook-connect.dev")
 ```
 
-2. call `getAuthorization` providing your client UUID, this will ask the server for a token which
+Call `getAuthorization` providing your client UUID, this will ask the server for a token which
    contains the SDKs you are allowed to use, and save this information in the device's local
    preferences.
 
@@ -66,18 +66,18 @@ This method returns a Future of `AuthorizationResult` described below:
 
 ```kotlin
 data class AuthorizationResult(
-    val origin: AuthorizationOrigin, // Where the authorization was retrieved from.
-    val authorization: Authorization // Authorization returned by server/preferences.
+   val origin: AuthorizationOrigin, // Where the authorization was retrieved from.
+   val authorization: Authorization // Authorization returned by server/preferences.
 )
 
 enum class AuthorizationOrigin {
-    REMOTE, // The authorization was retrieved from server.
-    LOCAL // The authorization was retrieved from preferences, this happens when the device does not have an active internet connection or if the request to the server fails.
+   REMOTE, // The authorization was retrieved from server.
+   LOCAL // The authorization was retrieved from preferences, this happens when the device does not have an active internet connection or if the request to the server fails.
 }
 
 data class Authorization(
-    val authorizedUntil: ZonedDateTime, // Expire date (UTC).
-    val features: Map<Feature, Boolean> // Features (SDKs) that are enabled or disabled.
+   val authorizedUntil: ZonedDateTime, // Expire date (UTC).
+   val features: Map<Feature, Boolean> // Features (SDKs) that are enabled or disabled.
 )
 ```
 

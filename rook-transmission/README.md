@@ -54,11 +54,11 @@ Create an instance of `RookTransmissionManager` providing:
 
 ```kotlin
 val manager = RookTransmissionManager(
-    context,
-    "api.rook-connect.dev",
-    USER_ID,
-    CLIENT_UUID,
-    CLIENT_PASSWORD
+        context,
+        "api.rook-connect.dev",
+        USER_ID,
+        CLIENT_UUID,
+        CLIENT_PASSWORD
 )
 ```
 
@@ -79,13 +79,13 @@ fun enqueueSleep() {
     scope.launch {
         try {
             val item = SleepSummaryItem(
-                sourceOfData = "Health Connect",
-                dateTime = now,
-                sleepStartDatetime = startDatetime,
-                sleepEndDatetime = startDatetime.plusHours(8),
-                sleepDate = startDatetime.toLocalDate(),
-                sleepDurationSeconds = 64800,
-                timeInBedSeconds = 64800,
+                    sourceOfData = "Health Connect",
+                    dateTime = now,
+                    sleepStartDatetime = startDatetime,
+                    sleepEndDatetime = startDatetime.plusHours(8),
+                    sleepDate = startDatetime.toLocalDate(),
+                    sleepDurationSeconds = 64800,
+                    timeInBedSeconds = 64800,
             )
 
             manager.enqueueSleepSummary(item)

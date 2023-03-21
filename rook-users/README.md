@@ -49,10 +49,10 @@ Create an instance of `RookUsersManager` providing:
 
 ```kotlin
 val manager = RookUsersManager(
-    context,
-    "api.rook-connect.dev",
-    CLIENT_UUID,
-    CLIENT_PASSWORD
+        context,
+        "api.rook-connect.dev",
+        CLIENT_UUID,
+        CLIENT_PASSWORD
 )
 ```
 
