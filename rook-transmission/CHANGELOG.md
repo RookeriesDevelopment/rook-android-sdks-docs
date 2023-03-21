@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.2
+
+* Added `Platform` parameter in `RookTransmissionManager` constructor:
+    * ANDROID - Enabled by default
+    * FLUTTER - Enable compatibility with flutter's `shared_preferences` package.
+    * REACT_NATIVE - Enable compatibility with `react-native-shared-preferences`.
+
 ## 0.3.1
 
 * Fixed logs duplication
