@@ -1,4 +1,4 @@
-# Rook authorization
+# Rook authorization SDK
 
 This is the main SDK required by all rook SDKs to enable their usage.
 
@@ -41,7 +41,7 @@ You must check authorization every time your app starts or before using other ro
 1. Create an instance of `AuthorizationProvider` providing a context, and apiUrl without https.
 
 ```kotlin
-val provider = AuthorizationProvider(context, "rook-connect.dev")
+val provider = AuthorizationProvider(context, "api.rook-connect.dev")
 ```
 
 2. call `getAuthorization` providing your client UUID, this will ask the server for a token which

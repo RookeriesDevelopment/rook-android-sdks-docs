@@ -1,4 +1,4 @@
-# Rook Health Connect
+# Rook Health Connect SDK
 
 This SDK enables apps to extract data from Google Health Connect. **rook_health_connect** is part
 of Rook Extraction, a series of SDKs dedicated to extracting Health Data from a variety of
