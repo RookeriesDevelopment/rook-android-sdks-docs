@@ -65,7 +65,7 @@ val manager = RookTransmissionManager(
 ### Enqueueing
 
 There are multiple functions to enqueue health data they follow the convention `enqueue_data_type` when calling any of
-these functions you’ll need to provide an instance of the required data type.
+these functions you'll need to provide an instance of the required data type.
 
 Enqueued data will be stored in an internal database until it is uploaded.
 

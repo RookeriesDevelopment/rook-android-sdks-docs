@@ -128,7 +128,7 @@ when your app is launched from said intent. You can use a dedicated Activity, or
 
 ### Check compatibility
 
-Before using any of the features of *rook_health_connect*, you need to ensure the user's device is compatible with
+Before using any of the features of *rook-health-connect*, you need to ensure the user's device is compatible with
 Health
 Connect and check if the [APK](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata) is
 installed.
