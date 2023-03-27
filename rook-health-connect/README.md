@@ -118,6 +118,10 @@ Create an instance of `RookHealthConnectManager` providing a context:
 val manager = RookHealthConnectManager(context)
 ```
 
+**WARNING:**
+
+* Before creating any instances, check [availability](#availability).
+
 ### Privacy policy
 
 Health Connect requires a privacy policy where you inform your users how you will handle and use their data.
@@ -126,14 +130,14 @@ In the [Android configuration](#android-configuration) section an intent filter 
 when your app is launched from said intent. You can use a dedicated Activity, or if you are using a
 **Single activity architecture**, you can use Deeplink. You can find an example of the first approach in our demo app.
 
-### Check compatibility
+### Availability
 
 Before using any of the features of *rook-health-connect*, you need to ensure the user's device is compatible with
 Health
 Connect and check if the [APK](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata) is
 installed.
 
-Call `checkAvailability`, this will return an `AvailabilityStatus`.
+Call `checkAvailability` on `RookHealthConnectAvailability`, this will return an `AvailabilityStatus`.
 
 | Status        | Description                                 | What to do                                      |
 |---------------|---------------------------------------------|-------------------------------------------------|

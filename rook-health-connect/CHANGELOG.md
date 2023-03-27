@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2
+
+* Fixed Crash when creating an instance of `RookHealthConnectManager` on devices with android 8 or devices without HC
+  APK.
+* Before creating an instance of `RookHealthConnectManager` check availability with `RookHealthConnectAvailability`.
+
 ## 0.3.1
 
 * Fixed logs duplication
