@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3
+
+* To avoid duplication when retrieving `PhysicalEvents` the data will be filtered to the origin that created
+  the `ExerciseSessionRecord`.
+
 ## 0.3.2
 
 * Fixed Crash when creating an instance of `RookHealthConnectManager` on devices with android 8 or devices without HC
