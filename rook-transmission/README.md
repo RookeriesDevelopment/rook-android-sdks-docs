@@ -73,14 +73,11 @@ To enqueue a Sleep Summary call `enqueueSleepSummary` and provide an instance of
 
 ```kotlin
 fun enqueueSleep() {
-    val now = toUTC(ZonedDateTime.now())
-    val startDatetime = now.minusHours(16)
-
     scope.launch {
         try {
             val item = SleepSummaryItem(
                     sourceOfData = "Health Connect",
-                    dateTime = now,
+                    dateTime = dateTime,
                     sleepStartDatetime = startDatetime,
                     sleepEndDatetime = startDatetime.plusHours(8),
                     sleepDate = startDatetime.toLocalDate(),
