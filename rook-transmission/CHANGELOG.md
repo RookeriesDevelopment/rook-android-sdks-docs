@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.4
+
+* Changed data types:
+  * BodySummaryItem
+    * temperatureDeltaCelsius → Double?
+  * SleepSummaryItem
+    * temperatureMinimumCelsius → Double?
+    * temperatureAvgCelsius → Double?
+    * temperatureMaxCelsius → Double?
+    * temperatureDeltaCelsius → Double?
+    * saturationAvgPercentage → Double?
+    * saturationMinPercentage → Double?
+    * saturationMaxPercentage → Double?
+
 ## 0.3.2
 
 * Added `Platform` parameter in `RookTransmissionManager` constructor:
