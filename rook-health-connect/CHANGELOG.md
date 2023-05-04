@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.4.0
+
+**Breaking changes:**
+
+All dateTime properties have been changed from `String` to `ZonedDateTime`
+
+All date properties have been changed from `String` to `LocalDate`
+
+All data classes and enums now have HC at the beginning, e.g.:
+
+* BodySummary → **HC**BodySummary
+* BloodGlucoseGranularDataMgPerDL → **HC**BloodGlucoseGranularDataMgPerDL
+
+The following functions have been removed:
+
+* getSleepSummaryLastDate
+* getPhysicalSummaryLastDate
+* getPhysicalEventsLastDate
+* getBodySummaryLastDate
+
+Instead, you should use `getLastExtractionDate` and provide a `HCRookDataType`:
+
+* SLEEP_SUMMARY
+* PHYSICAL_SUMMARY
+* PHYSICAL_EVENT
+* BODY_SUMMARY
+
+**Other changes:**
+
+* Data extraction performance optimizations
+
 ## 0.3.3
 
 * To avoid duplication when retrieving `PhysicalEvents` the data will be filtered to the origin that created
