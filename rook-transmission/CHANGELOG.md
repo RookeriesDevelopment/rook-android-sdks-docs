@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.5
+
+* Performance optimizations
+
 ## 0.3.4
 
 * Changed data types:
