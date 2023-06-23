@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1
+
+* Fixed obfuscation rules.
+* Added UserInfo extraction.
+
 ## 0.4.0
 
 **Breaking changes:**
