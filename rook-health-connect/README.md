@@ -68,6 +68,10 @@ Then declare the health permissions used by this SDK:
 <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE" />
 <uses-permission android:name="android.permission.health.READ_HYDRATION" />
 <uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE" />
+<uses-permission android:name="android.permission.health.READ_RESPIRATORY_RATE" />
+<uses-permission android:name="android.permission.health.READ_NUTRITION" />
+<uses-permission android:name="android.permission.health.READ_MENSTRUATION" />
+<uses-permission android:name="android.permission.health.READ_POWER" />
 ```
 
 Finally, inside the Activity that you use to display your app's privacy policy, add an
@@ -217,7 +221,52 @@ fun openHealthConnectSettings() {
 }
 ```
 
-### Retrieving data
+### Retrieving user information
+
+To retrieve user information call `getUserInfo` It will return a HCUserInfo instance.
+
+```kotlin
+fun getUserInfo() {
+    scope.launch {
+        try {
+            val result = manager.getUserInfo(date)
+
+            // Success
+        } catch (e: Exception) {
+            // Manage error
+        }
+    }
+}
+```
+
+All properties (except for `dateTime` and `sourceOfData`) are nullable because there will be cases where we won't be
+able to extract such information, in those cases you can check the if the properties are null, and change them (all
+nullable properties are also mutable) before enqueuing your HCUserInfo
+to [rook-transmission](https://mvnrepository.com/artifact/com.rookmotion.android/rook-transmission).
+
+```text
+fun fillNullProperties(userinfo: HCUserInfo) {
+    if (userinfo.userInformation.userDemographics.sex == null) {
+        userinfo.userInformation.userDemographics.sex = // Provide sex 
+    }
+
+    if (userinfo.userInformation.userDemographics.city == null) {
+        userinfo.userInformation.userDemographics.city = // Provide city 
+    }
+
+    if (userinfo.userInformation.userDemographics.education == null) {
+        userinfo.userInformation.userDemographics.education = // Provide education 
+    }
+
+    if (userinfo.userInformation.userBodyMetrics.dateOfBirth == null) {
+        userinfo.userInformation.userBodyMetrics.dateOfBirth = // Provide dateOfBirth 
+    }
+
+    // Enqueue with rook-transmission
+}
+```
+
+### Retrieving health data
 
 To retrieve any type of summary, you need to provide a date. This date cannot be the current
 day and cannot be older than 29 days. See the examples below:
@@ -240,7 +289,11 @@ or if there is no sleep data on that day.
 fun getSleepSummary() {
     scope.launch {
         try {
-            val date = ZonedDateTime.now().minusDays(1)
+            val date = ZonedDateTime.now()
+                .minusDays(1)
+                .truncatedTo(ChronoUnit.DAYS)
+                .withZoneSameInstant(ZoneId.of("UTC"))
+
             val result = manager.getSleepSummary(date)
 
             // Success
@@ -258,8 +311,8 @@ you should retrieve the data manually to help you retrieve the data of the days 
 open your app. We store in preferences the last date data was retrieved from (even if that attempt
 resulted in no data being found).
 
-Depending on the data type, there are multiple functions to retrieve that date. They follow the
-convention: `get_data_type_LastDate`
+Call `getLastExtractionDate(rookDataType: HCRookDataType)` providing a `HCRookDataType`, e.g. if you want to retrieve
+the last date a `SleepSummary` was retrieved use `HCRookDataType.SLEEP_SUMMARY`.
 
 It will return a `ZonedDateTime` instance.
 
@@ -268,9 +321,9 @@ It will return a `ZonedDateTime` instance.
 Let's suppose that one of your users opens the app on `2023-01-10`, the app then retrieves a sleep
 summary from yesterday (`2023-01-09`) with `getSleepSummary`.
 
-Then the user forgets to open the app until `2023-01-15`, then you'll call `getSleepSummaryLastDate`
-it will return `2023-01-09` in a ZonedDateTime instance. Now, in a loop, you can recover data from
-the days the user did not open the app (`2023-01-10` to `2023-01-14`).
+Then the user forgets to open the app until `2023-01-15`, then you'll
+call `getLastExtractionDate(rookDataType: HCRookDataType)`it will return `2023-01-09` in a ZonedDateTime instance. Now,
+in a loop, you can recover data from the days the user did not open the app (`2023-01-10` to `2023-01-14`).
 
 An example using sleep summaries is detailed below:
 
@@ -278,13 +331,13 @@ An example using sleep summaries is detailed below:
 fun recoverLostDays() {
     scope.launch {
         val today = LocalDate.now()
-        var date = manager.getSleepSummaryLastDate().toLocalDate()
+        var date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
 
         date = date.plusDays(1)
 
         while (date.isBefore(today)) {
             try {
-                val result = manager.getSleepSummary(date.atStartOfDay(ZoneId.systemDefault()))
+                val result = manager.getSleepSummary(date)
 
                 // Success
             } catch (e: Exception) {
@@ -296,3 +349,65 @@ fun recoverLostDays() {
     }
 }
 ```
+
+### Timezones
+
+All datetime objects returned by this SDK are in `UTC`, and you also must provide all datetime objects in `UTC` as well.
+
+#### Retrieving health data in UTC
+
+When you request data using `getSleepSummary(date: ZonedDateTime)` the provided `date` is used to create a range
+where `date` is the `start` and `end` is created adding **23:59:59** to `start`. This can become tricky specially with
+all the different timezones your users may be in.
+
+For that reason we recommend to only use UTC when retrieving data, use the following as an example:
+
+Today is **2023-05-26** in Mexico (**UTC-6**)
+
+To retrieve a SleepSummary from yesterday (**2023-05-25**) call `getSleepSummary(date: ZonedDateTime)` where date is
+obtained with:
+
+```kotlin
+val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
+    .minusDays(1) // Yesterday 2023-05-25T15:12:20
+    .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-25T00:00:00
+    .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-25T06:00:00Z
+```
+
+As you can see we started obtaining **today's** then subtracted one day to get **yesterday's**, and because this date
+will be used as the `start`, all fields after `DAYS` were truncated to zero.
+
+Finally, the date was converted to UTC resulting in **2023-05-25T06:00:00Z** it has **06:00:00** because
+**2023-05-25T00:00:00** in Mexico is **2023-05-25T06:00:00Z** in UTC.
+
+Internally the SDK will perform the following operations:
+
+1. Use 2023-05-25T06:00:00Z as `start`
+2. Create a copy of `start` named `end` and add **23:59:59**
+
+So the time range will end up like:
+
+`start`: 2023-05-25T06:00:00Z < --- >`end`: 2023-05-26T05:59:59Z
+
+Which in **UTC-6** is equivalent to:
+
+`start`: 2023-05-25T00:00:00 < --- >`end`: 2023-05-25T23:59:59
+
+#### What about last extraction date?
+
+When you use `getLastExtractionDate(rookDataType: HCRookDataType)` the returned ZonedDateTime is the same you provided
+when retrieving health data.
+
+Using the example from [above](#retrieving-health-data-in-utc); `getLastExtractionDate(rookDataType: HCRookDataType)`
+will return **2023-05-25T06:00:00Z** which as you can notice, is already truncated and in UTC.
+
+So, to retrieve health data from the following day all you need to do is add one day:
+
+```kotlin
+val date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
+    .plusDays(1)
+```
+
+* If your users are more likely to change locations (timezones), you may have to instead convert the result
+  of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's timezone, add one day, truncate (if necessary)
+  and convert again to UTC. 

@@ -1,6 +1,35 @@
 # Changelog
 
-## 0.4.1
+## 0.5.1
+
+* Migrated to data matrix 2.0
+* Added events extraction
+  * Blood glucose event
+  * Blood pressure
+  * Body metrics event
+  * Heart rate
+  * Hydration event
+  * Mood event
+  * Nutrition event
+  * Oxygenation event
+  * Stress event
+  * Temperature event
+
+**New permissions**
+
+From this version onwards you need to include 4 new READ permissions (Check README to see the full list of permissions
+that you have to add to your manifest):
+
+* READ_RESPIRATORY_RATE
+* READ_NUTRITION
+* READ_MENSTRUATION
+* READ_POWER
+
+**User info**
+
+Due to migration currently in progress UserInfo extraction has been disabled
+
+## 0.4.2
 
 * Fixed obfuscation rules.
 * Added UserInfo extraction.
