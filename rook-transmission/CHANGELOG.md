@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.1
+
+* Migrated to data matrix 2.0
+* Added events transmission
+  * Blood glucose event
+  * Blood pressure
+  * Body metrics event
+  * Heart rate
+  * Hydration event
+  * Mood event
+  * Nutrition event
+  * Oxygenation event
+  * Stress event
+  * Temperature event
+
 ## 0.3.5
 
 * Performance optimizations
@@ -7,16 +22,16 @@
 ## 0.3.4
 
 * Changed data types:
-  * BodySummaryItem
-    * temperatureDeltaCelsius → Double?
-  * SleepSummaryItem
-    * temperatureMinimumCelsius → Double?
-    * temperatureAvgCelsius → Double?
-    * temperatureMaxCelsius → Double?
-    * temperatureDeltaCelsius → Double?
-    * saturationAvgPercentage → Double?
-    * saturationMinPercentage → Double?
-    * saturationMaxPercentage → Double?
+    * BodySummaryItem
+        * temperatureDeltaCelsius → Double?
+    * SleepSummaryItem
+        * temperatureMinimumCelsius → Double?
+        * temperatureAvgCelsius → Double?
+        * temperatureMaxCelsius → Double?
+        * temperatureDeltaCelsius → Double?
+        * saturationAvgPercentage → Double?
+        * saturationMinPercentage → Double?
+        * saturationMaxPercentage → Double?
 
 ## 0.3.2
 
