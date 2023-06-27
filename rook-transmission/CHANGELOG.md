@@ -4,16 +4,16 @@
 
 * Migrated to data matrix 2.0
 * Added events transmission
-  * Blood glucose event
-  * Blood pressure
-  * Body metrics event
-  * Heart rate
-  * Hydration event
-  * Mood event
-  * Nutrition event
-  * Oxygenation event
-  * Stress event
-  * Temperature event
+    * Blood Glucose Event
+    * Blood Pressure Event
+    * Body Metrics Event
+    * Heart Rate Event
+    * Hydration Event
+    * Mood Event
+    * Nutrition Event
+    * Oxygenation Event
+    * Stress Event
+    * Temperature Event
 
 ## 0.3.5
 
