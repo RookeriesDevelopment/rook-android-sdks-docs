@@ -4,10 +4,21 @@ This SDK allows apps to transmit Health Data to the ROOK server.
 
 ## Features
 
-* Upload sleep summaries
-* Upload physical summaries
-* Upload body summaries
-* Upload physical events
+* Enqueue and upload health data:
+  * Sleep Summary
+  * Physical Summary
+  * Physical Event
+  * Body Summary
+  * Blood Glucose Event
+  * Blood Pressure Event
+  * Body Metrics Event
+  * Heart Rate Event
+  * Hydration Event
+  * Mood Event
+  * Nutrition Event
+  * Oxygenation Event
+  * Stress Event
+  * Temperature Event
 
 ## Installation
 
@@ -54,11 +65,11 @@ Create an instance of `RookTransmissionManager` providing:
 
 ```kotlin
 val manager = RookTransmissionManager(
-        context,
-        "api.rook-connect.dev",
-        USER_ID,
-        CLIENT_UUID,
-        CLIENT_PASSWORD
+  context,
+  "api.rook-connect.dev",
+  USER_ID,
+  CLIENT_UUID,
+  CLIENT_PASSWORD
 )
 ```
 
@@ -73,70 +84,33 @@ To enqueue a Sleep Summary call `enqueueSleepSummary` and provide an instance of
 
 ```kotlin
 fun enqueueSleep() {
-    scope.launch {
-        try {
-            val item = SleepSummaryItem(
-                    sourceOfData = "Health Connect",
-                    dateTime = dateTime,
-                    sleepStartDatetime = startDatetime,
-                    sleepEndDatetime = startDatetime.plusHours(8),
-                    sleepDate = startDatetime.toLocalDate(),
-                    sleepDurationSeconds = 64800,
-                    timeInBedSeconds = 64800,
-            )
+  scope.launch {
+    try {
+      val item = SleepSummaryItem(
+        sourceOfData = "Health Connect",
+        dateTime = dateTime,
+        sleepStartDatetime = startDatetime,
+        sleepEndDatetime = startDatetime.plusHours(8),
+        sleepDate = startDatetime.toLocalDate(),
+        sleepDurationSeconds = 64800,
+        timeInBedSeconds = 64800,
+      )
 
-            manager.enqueueSleepSummary(item)
+      manager.enqueueSleepSummary(item)
 
-            // Success
-        } catch (e: Exception) {
-            // Manage error
-        }
+      // Success
+    } catch (e: Exception) {
+      // Manage error
     }
+  }
 }
 ```
 
-Remember to send the dates and date times with UTC timezone.
+* Remember to send the dates and date times with UTC timezone.
 
 rook_extraction SDKs
 like [rook_health_connect](https://mvnrepository.com/artifact/com.rookmotion.android/rook-health-connect)
-deliver the date with ISO-8601 (UTC) format like `2023-01-06T22:00:22.065Z`.
-
-To convert an ISO-8601 (UTC) to a ZonedDateTime you can use the following helper:
-
-```kotlin
-object RookDateTimeUtils {
-    private val utc: ZoneId get() = ZoneId.of("UTC")
-    private val rookDateTimeZFormatter: DateTimeFormatter get() = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSz")
-    private val rookDateTimeFormatter: DateTimeFormatter get() = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private val rookDateFormatter: DateTimeFormatter get() = DateTimeFormatter.ISO_LOCAL_DATE
-
-    fun toUTC(date: ZonedDateTime): ZonedDateTime {
-        val dateUTC = if (date.offset == ZoneOffset.UTC) {
-            date
-        } else {
-            date.withZoneSameInstant(utc)
-        }
-
-        val rookDateString = rookDateTimeFormatter.format(dateUTC).plus("Z")
-
-        return stringToZonedDateTime(rookDateString)
-    }
-
-    fun stringToZonedDateTime(string: String): ZonedDateTime {
-        val date = ZonedDateTime.parse(string, rookDateTimeZFormatter)
-
-        return if (date.offset == ZoneOffset.UTC) {
-            date
-        } else {
-            date.withZoneSameInstant(utc)
-        }
-    }
-
-    fun stringToLocalDate(string: String): LocalDate {
-        return LocalDate.parse(string, rookDateFormatter)
-    }
-}
-```
+deliver an already configured `ZonedDateTime` in those cases you don't have to do anything else.
 
 ### Clear queue
 
@@ -158,23 +132,24 @@ fun clearSleepSummaryQueue() {
 
 ### Uploading
 
-To upload (send) all enqueued health data call `uploadAll`, this will upload all types of data and
-delete
-them from the internal Database.
+To upload (send) all enqueued health data call `upload_data_type`, this will upload the desired type of data and
+delete them from the Database.
 
 ```kotlin
 fun uploadAll() {
     scope.launch {
-        try {
-            manager.uploadAll()
+      try {
+        manager.uploadSleepSummaries()
 
-            // Success
-        } catch (e: Exception) {
-            // Manage error
-        }
+        // Success
+      } catch (e: Exception) {
+        // Manage error
+      }
     }
 }
 ```
 
-* You can also upload specific types of data these functions will follow the convention:
-  `upload_data_type`.
+## Other resources
+
+* See a complete list of `RookTransmissionManager` functions in
+  the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-transmission/latest/com/rookmotion/rook/transmission/RookTransmissionManager.html)

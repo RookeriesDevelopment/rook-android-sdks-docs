@@ -12,10 +12,21 @@ of Rook Extraction, a series of SDKs dedicated to extracting Health Data from a 
 
 * Check for Health Connect APK availability.
 * Check and request permissions.
-* Retrieve a [Sleep Summary](https://docs.tryrook.io/docs/DataStructure/SleepHealth#summaries) from a specific day.
-* Retrieve a [Physical Summary](https://docs.tryrook.io/docs/DataStructure/PhysicalHealth#summaries) from a specific
-  day.
-* Retrieve a [Body Summary](https://docs.tryrook.io/docs/DataStructure/BodyHealth#summaries) from a specific day.
+* Retrieve health data:
+  * [Sleep Summary](https://docs.tryrook.io/docs/DataStructure/SleepHealth#summaries)
+  * [Physical Summary](https://docs.tryrook.io/docs/DataStructure/PhysicalHealth#summaries)
+  * Physical Event
+  * [Body Summary](https://docs.tryrook.io/docs/DataStructure/BodyHealth#summaries)
+  * Blood Glucose Event
+  * Blood Pressure Event
+  * Body Metrics Event
+  * Heart Rate Event
+  * Hydration Event
+  * Mood Event
+  * Nutrition Event
+  * Oxygenation Event
+  * Stress Event
+  * Temperature Event
 
 ## Installation
 
@@ -405,9 +416,14 @@ So, to retrieve health data from the following day all you need to do is add one
 
 ```kotlin
 val date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
-    .plusDays(1)
+  .plusDays(1)
 ```
 
 * If your users are more likely to change locations (timezones), you may have to instead convert the result
   of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's timezone, add one day, truncate (if necessary)
-  and convert again to UTC. 
+  and convert again to UTC.
+
+## Other resources
+
+* See a complete list of `RookHealthConnectManager` functions in
+  the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-health-connect/latest/com/rookmotion/rook/health_connect/RookHealthConnectManager.html)
