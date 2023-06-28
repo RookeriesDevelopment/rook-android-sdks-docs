@@ -1,14 +1,18 @@
 # Changelog
 
+## 0.5.2
+
+* Fixed Blood Pressure returning NaN values.
+
 ## 0.5.1
 
 * Migrated to data matrix 2.0
 * Added events extraction
-    * Blood Glucose Event
-    * Blood Pressure Event
-    * Body Metrics Event
-    * Heart Rate Event
-    * Hydration Event
+  * Blood Glucose Event
+  * Blood Pressure Event
+  * Body Metrics Event
+  * Heart Rate Event
+  * Hydration Event
     * Mood Event
     * Nutrition Event
     * Oxygenation Event
