@@ -30,12 +30,15 @@ of Rook Extraction, a series of SDKs dedicated to extracting Health Data from a 
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-health-connect?color=%23F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-health-connect?style=for-the-badge&logo=gradle&label=rook-health-connect&color=F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=F44336)
 
-Add the following to your dependencies (app level build.gradle):
+In your **build.gradle** (app module) add the required dependencies. We recommend using our BoM to get latest compatible
+versions:
 
 ```groovy
-implementation 'com.rookmotion.android:rook-health-connect:version'
+implementation platform("com.rookmotion.android:rook-bom:bom-version")
+implementation 'com.rookmotion.android:rook-health-connect'
 ```
 
 ## Getting started

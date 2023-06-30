@@ -8,12 +8,15 @@ This is the main SDK required by all rook SDKs to enable their usage.
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-auth?color=%23F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-auth?style=for-the-badge&logo=gradle&label=rook-auth&color=F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=F44336)
 
-Add the following to your dependencies (app level build.gradle):
+In your **build.gradle** (app module) add the required dependencies. We recommend using our BoM to get latest compatible
+versions:
 
 ```groovy
-implementation 'com.rookmotion.android:rook-auth:version'
+implementation platform("com.rookmotion.android:rook-bom:bom-version")
+implementation 'com.rookmotion.android:rook-auth'
 ```
 
 ## Getting started
@@ -45,8 +48,8 @@ val provider = AuthorizationProvider(context, "api.rook-connect.dev")
 ```
 
 Call `getAuthorization` providing your client UUID, this will ask the server for a token which
-   contains the SDKs you are allowed to use, and save this information in the device's local
-   preferences.
+contains the SDKs you are allowed to use, and save this information in the device's local
+preferences.
 
 ```kotlin
 fun getAuthorization() {
@@ -66,18 +69,18 @@ This method returns a Future of `AuthorizationResult` described below:
 
 ```kotlin
 data class AuthorizationResult(
-   val origin: AuthorizationOrigin, // Where the authorization was retrieved from.
-   val authorization: Authorization // Authorization returned by server/preferences.
+    val origin: AuthorizationOrigin, // Where the authorization was retrieved from.
+    val authorization: Authorization // Authorization returned by server/preferences.
 )
 
 enum class AuthorizationOrigin {
-   REMOTE, // The authorization was retrieved from server.
-   LOCAL // The authorization was retrieved from preferences, this happens when the device does not have an active internet connection or if the request to the server fails.
+    REMOTE, // The authorization was retrieved from server.
+    LOCAL // The authorization was retrieved from preferences, this happens when the device does not have an active internet connection or if the request to the server fails.
 }
 
 data class Authorization(
-   val authorizedUntil: ZonedDateTime, // Expire date (UTC).
-   val features: Map<Feature, Boolean> // Features (SDKs) that are enabled or disabled.
+    val authorizedUntil: ZonedDateTime, // Expire date (UTC).
+    val features: Map<Feature, Boolean> // Features (SDKs) that are enabled or disabled.
 )
 ```
 

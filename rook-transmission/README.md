@@ -22,12 +22,15 @@ This SDK allows apps to transmit Health Data to the ROOK server.
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-transmission?color=%23F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-transmission?style=for-the-badge&logo=gradle&label=rook-transmission&color=F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=F44336)
 
-Add the following to your dependencies (app level build.gradle):
+In your **build.gradle** (app module) add the required dependencies. We recommend using our BoM to get latest compatible
+versions:
 
 ```groovy
-implementation 'com.rookmotion.android:rook-transmission:version'
+implementation platform("com.rookmotion.android:rook-bom:bom-version")
+implementation 'com.rookmotion.android:rook-transmission'
 ```
 
 ## Getting started
