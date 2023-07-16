@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.3
+
+The `Metadata.dateTime` of physical pillar events like:
+
+* Physical Event
+* Physical Heart Rate Event
+* Physical Oxygenation Event
+* Physical Stress Event
+
+Will use the `startTime` of the `ExerciseSessionRecord` they belong to.
+
 ## 0.5.2
 
 * Fixed Blood Pressure returning NaN values.
