@@ -330,6 +330,8 @@ the last date a `SleepSummary` was retrieved use `HCRookDataType.SLEEP_SUMMARY`.
 
 It will return a `ZonedDateTime` instance.
 
+* If the stored date is older than 29 days it will be ignored it and a DateNotFoundException will be thrown.
+
 #### Example
 
 Let's suppose that one of your users opens the app on `2023-01-10`, the app then retrieves a sleep
@@ -374,7 +376,7 @@ When you request data using `getSleepSummary(date: ZonedDateTime)` the provided 
 where `date` is the `start` and `end` is created adding **23:59:59** to `start`. This can become tricky specially with
 all the different timezones your users may be in.
 
-For that reason we recommend to only use UTC when retrieving data, use the following as an example:
+For that reason we only allow UTC when retrieving data, use the following as an example:
 
 Today is **2023-05-26** in Mexico (**UTC-6**)
 
