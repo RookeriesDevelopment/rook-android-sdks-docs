@@ -13,11 +13,11 @@
   * Body Metrics Event
   * Heart Rate Event
   * Hydration Event
-    * Mood Event
-    * Nutrition Event
-    * Oxygenation Event
-    * Stress Event
-    * Temperature Event
+  * Mood Event
+  * Nutrition Event
+  * Oxygenation Event
+  * Stress Event
+  * Temperature Event
 
 **New permissions**
 
@@ -28,6 +28,11 @@ that you have to add to your manifest):
 * READ_NUTRITION
 * READ_MENSTRUATION
 * READ_POWER
+
+**New permissions system**
+
+If you are using the old health connect permissions declaration (meta-data tag), you MUST migrate otherwise
+the `permissions` functions owon't work.
 
 **User info**
 
