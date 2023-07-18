@@ -17,7 +17,8 @@ Will use the `startTime` of the `ExerciseSessionRecord` they belong to.
 
 ## 0.5.1
 
-* Migrated to data matrix 2.0
+**Migrated to data matrix 2.0**
+
 * Added events extraction
   * Blood Glucose Event
   * Blood Pressure Event
@@ -43,7 +44,7 @@ that you have to add to your manifest):
 **New permissions system**
 
 If you are using the old health connect permissions declaration (meta-data tag), you MUST migrate otherwise
-the `permissions` functions owon't work.
+the `permissions` functions won't work.
 
 **User info**
 

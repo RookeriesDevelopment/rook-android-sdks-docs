@@ -30,8 +30,8 @@ of Rook Extraction, a series of SDKs dedicated to extracting Health Data from a 
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-health-connect?style=for-the-badge&logo=gradle&label=rook-health-connect&color=F44336)
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-health-connect?style=for-the-badge&logo=gradle&label=rook-health-connect&color=7200F7)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=7200F7)
 
 In your **build.gradle** (app module) add the required dependencies. We recommend using our BoM to get latest compatible
 versions:
@@ -345,18 +345,21 @@ An example using sleep summaries is detailed below:
 
 ```kotlin
 fun recoverLostDays() {
-    scope.launch {
-        val today = LocalDate.now()
-        var date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
+  scope.launch {
+    val today = ZonedDateTime.now()
+      .truncatedTo(ChronoUnit.DAYS)
+      .withZoneSameInstant(ZoneId.of("UTC"))
 
-        date = date.plusDays(1)
+    var date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
 
-        while (date.isBefore(today)) {
-            try {
-                val result = manager.getSleepSummary(date)
+    date = date.plusDays(1)
 
-                // Success
-            } catch (e: Exception) {
+    while (date.isBefore(today)) {
+      try {
+        val result = manager.getSleepSummary(date)
+
+        // Success
+      } catch (e: Exception) {
                 // Manage error
             }
 
@@ -415,7 +418,7 @@ When you use `getLastExtractionDate(rookDataType: HCRookDataType)` the returned 
 when retrieving health data.
 
 Using the example from [above](#retrieving-health-data-in-utc); `getLastExtractionDate(rookDataType: HCRookDataType)`
-will return **2023-05-25T06:00:00Z** which as you can notice, is already truncated and in UTC.
+will return **2023-05-25T06:00:00Z** which as you can notice, is already in UTC.
 
 So, to retrieve health data from the following day all you need to do is add one day:
 

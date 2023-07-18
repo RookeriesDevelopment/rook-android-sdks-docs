@@ -2,7 +2,8 @@
 
 ## 0.4.1
 
-* Migrated to data matrix 2.0
+**Migrated to data matrix 2.0**
+
 * Added events transmission
     * Blood Glucose Event
     * Blood Pressure Event
