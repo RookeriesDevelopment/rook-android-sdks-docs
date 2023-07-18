@@ -9,8 +9,8 @@ their [Users](https://docs.tryrook.io/docs/Definitions/#User) in ROOK server.
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-users?style=for-the-badge&logo=gradle&label=rook-users&color=F44336)
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-users?style=for-the-badge&logo=gradle&label=rook-users&color=7200F7)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=7200F7)
 
 In your **build.gradle** (app module) add the required dependencies. We recommend using our BoM to get latest compatible
 versions:

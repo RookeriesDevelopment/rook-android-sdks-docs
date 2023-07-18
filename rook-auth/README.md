@@ -8,8 +8,8 @@ This is the main SDK required by all rook SDKs to enable their usage.
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-auth?style=for-the-badge&logo=gradle&label=rook-auth&color=F44336)
-![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=F44336)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-auth?style=for-the-badge&logo=gradle&label=rook-auth&color=7200F7)
+![Maven Central](https://img.shields.io/maven-central/v/com.rookmotion.android/rook-bom?style=for-the-badge&logo=gradle&label=rook-bom&color=7200F7)
 
 In your **build.gradle** (app module) add the required dependencies. We recommend using our BoM to get latest compatible
 versions:
