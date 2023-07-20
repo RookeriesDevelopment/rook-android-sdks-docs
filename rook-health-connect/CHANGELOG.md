@@ -46,6 +46,11 @@ that you have to add to your manifest):
 If you are using the old health connect permissions declaration (meta-data tag), you MUST migrate otherwise
 the `permissions` functions won't work.
 
+**New timezone requirements**
+
+The ZonedDateTime object provided when requesting health data must be in UTC, see README `Timezones` section for more
+details.
+
 **User info**
 
 Due to migration currently in progress UserInfo extraction has been disabled
