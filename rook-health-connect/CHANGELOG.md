@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.4
+
+* Fixed min values not calculated
+
 ## 0.5.3
 
 The `Metadata.dateTime` of physical pillar events like:
