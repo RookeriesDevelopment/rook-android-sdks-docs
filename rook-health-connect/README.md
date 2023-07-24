@@ -165,7 +165,7 @@ Call `checkAvailability` on `RookHealthConnectAvailability`, this will return an
 
 ### Permissions
 
-#### Check
+#### Check permissions
 
 There are dedicated functions for each [Health Pillar](https://docs.tryrook.io/docs/Definitions#health-data-pillars)
 (Sleep, Physical, and Body) to check permissions. These functions follow the convention: `has_data_type_Permissions`
@@ -187,7 +187,7 @@ fun checkPermissions() {
 }
 ```
 
-#### Request
+#### Request permissions
 
 There are dedicated functions for each [Health Pillar](https://docs.tryrook.io/docs/Definitions#health-data-pillars)
 (Sleep, Physical and Body) to request permissions. These functions follow the
@@ -282,6 +282,117 @@ fun fillNullProperties(userinfo: HCUserInfo) {
 
 ### Retrieving health data
 
+There are 2 types of health data **Summaries** and **Events**.
+
+| Health Data | Timezone (Input / Output) | Oldest date of retrieval | Soonest date of retrieval |
+|-------------|---------------------------|--------------------------|---------------------------|
+| Summary     | UTC                       | 29 days                  | Yesterday                 |
+| Event       | UTC                       | 29 days                  | Today                     |
+
+#### Retrieving health data in UTC
+
+All health data types require a `ZonedDateTime` instance if the date (summary) or datetime (event) you want to retrieve
+data from. When using `get_health_data_type(date: ZonedDateTime)` the provided `date` is used to create a range
+between `date` (start) and the end of the day (end). This can become tricky specially with
+all the different timezones your users may be in.
+
+For that reason we **only allow UTC when retrieving data**, follow the following examples:
+
+##### Retrieve health data for the whole day of yesterday
+
+Today is **2023-05-26** in Mexico City (**UTC-6**)
+
+To retrieve health data for the whole day of yesterday (**2023-05-25**) call `get_health_data_type(date: ZonedDateTime)`
+where date is obtained with:
+
+```kotlin
+val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
+  .minusDays(1) // Yesterday 2023-05-25T15:12:20
+  .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-25T00:00:00
+  .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-25T06:00:00Z
+```
+
+As you can see we started obtaining **today's** then subtracted one day to get **yesterday's**, and because we want
+to cover the whole day, all fields after `DAYS` were truncated to zero.
+
+Finally, the date was converted to UTC resulting in **2023-05-25T06:00:00Z** it has **06:00:00** because
+**2023-05-25T00:00:00** in Mexico City is **2023-05-25T06:00:00Z** in UTC.
+
+Internally the SDK will perform the following operations:
+
+1. Use 2023-05-25T06:00:00Z as `start`
+2. Create the range between `start` and the end of the day `start` belongs to.
+
+So the time range will end up like:
+
+`start`: 2023-05-25T06:00:00Z < --- >`end`: 2023-05-26T06:00:00Z
+
+Which in **Mexico City (UTC-6)** is equivalent to:
+
+`start`: 2023-05-25T00:00:00 < --- >`end`: 2023-05-26T00:00:00
+
+##### Retrieve health data for the whole day of today
+
+Today is **2023-05-26** in Mexico City (**UTC-6**)
+
+To retrieve health data for the whole day of today (**2023-05-26**) call `get_health_data_type(date: ZonedDateTime)`
+where date is obtained with:
+
+```kotlin
+val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
+  .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-26T00:00:00
+  .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-26T06:00:00Z
+```
+
+As you can see we started obtaining **today's**, and because we want health data from the entire day, all fields
+after `DAYS` were truncated to zero.
+
+Finally, the date was converted to UTC resulting in **2023-05-26T00:00:00Z** it has **06:00:00** because
+**2023-05-26T00:00:00** in Mexico City is **2023-05-26T06:00:00Z** in UTC.
+
+Internally the SDK will perform the following operations:
+
+1. Use 2023-05-26T06:00:00Z as `start`
+2. Create the range between `start` and the end of the day `start` belongs to.
+
+So the time range will end up like:
+
+`start`: 2023-05-26T06:00:00Z < --- >`end`: 2023-05-27T06:00:00Z
+
+Which in **Mexico City (UTC-6)** is equivalent to:
+
+`start`: 2023-05-26T00:00:00 < --- >`end`: 2023-05-27T00:00:00
+
+##### Retrieve health data for the rest of the day of today
+
+Today is **2023-05-26** in Mexico City (**UTC-6**)
+
+To retrieve health data for the rest of the day of today (**2023-05-26**)
+call `get_health_data_type(date: ZonedDateTime)` where date is obtained with:
+
+```kotlin
+val date = ZonedDateTime.now() // Today 2023-05-26T12:00:00
+  .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-26T18:00:00Z
+```
+
+In this case the date was only converted to UTC resulting in **2023-05-26T18:00:00Z** it has **18:00:00** because
+**2023-05-26T12:00:00** in Mexico City is **2023-05-26T18:00:00Z** in UTC.
+
+Internally the SDK will perform the following operations:
+
+1. Use 2023-05-26T18:00:00Z as `start`
+2. Create the range between `start` and the end of the day `start` belongs to
+
+So the time range will end up like:
+
+`start`: 2023-05-26T18:00:00Z < --- >`end`: 2023-05-27T06:00:00Z
+
+Which in **Mexico City (UTC-6)** is equivalent to:
+
+`start`: 2023-05-26T12:00:00 < --- >`end`: 2023-05-27T00:00:00
+
+#### Retrieve summaries
+
 To retrieve any type of summary, you need to provide a date. This date cannot be the current
 day and cannot be older than 29 days. See the examples below:
 
@@ -318,11 +429,11 @@ fun getSleepSummary() {
 }
 ```
 
-### Keeping track of the last time a summary was retrieved
+##### Keeping track of the last date a summary was retrieved
 
 Health Connect does not allow retrieving data on background, so every time your users open your app
 you should retrieve the data manually to help you retrieve the data of the days the user did not
-open your app. We store in preferences the last date data was retrieved from (even if that attempt
+open your app. We store in preferences the last date data was retrieved (even if that attempt
 resulted in no data being found).
 
 Call `getLastExtractionDate(rookDataType: HCRookDataType)` providing a `HCRookDataType`, e.g. if you want to retrieve
@@ -330,9 +441,16 @@ the last date a `SleepSummary` was retrieved use `HCRookDataType.SLEEP_SUMMARY`.
 
 It will return a `ZonedDateTime` instance.
 
-* If the stored date is older than 29 days it will be ignored it and a DateNotFoundException will be thrown.
+Considerations:
 
-#### Example
+* The returned ZonedDateTime will be in UTC.
+* The returned ZonedDateTime is the same you provided when retrieving health data.
+* If the stored date is older than 29 days it will be ignored it and a DateNotFoundException will be thrown.
+* If your users are more likely to change locations (timezones), you may have to instead convert the result
+  of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's new timezone, add one day, truncate (if
+  necessary) and convert again to UTC.
+
+##### Last extraction date of a sleep summary example
 
 Let's suppose that one of your users opens the app on `2023-01-10`, the app then retrieves a sleep
 summary from yesterday (`2023-01-09`) with `getSleepSummary`.
@@ -360,76 +478,14 @@ fun recoverLostDays() {
 
         // Success
       } catch (e: Exception) {
-                // Manage error
-            }
+        // Manage error
+      }
 
-            date = date.plusDays(1)
-        }
+      date = date.plusDays(1)
     }
+  }
 }
 ```
-
-### Timezones
-
-All datetime objects returned by this SDK are in `UTC`, and you also must provide all datetime objects in `UTC` as well.
-
-#### Retrieving health data in UTC
-
-When you request data using `getSleepSummary(date: ZonedDateTime)` the provided `date` is used to create a range
-where `date` is the `start` and `end` is created adding **23:59:59** to `start`. This can become tricky specially with
-all the different timezones your users may be in.
-
-For that reason we only allow UTC when retrieving data, use the following as an example:
-
-Today is **2023-05-26** in Mexico (**UTC-6**)
-
-To retrieve a SleepSummary from yesterday (**2023-05-25**) call `getSleepSummary(date: ZonedDateTime)` where date is
-obtained with:
-
-```kotlin
-val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
-    .minusDays(1) // Yesterday 2023-05-25T15:12:20
-    .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-25T00:00:00
-    .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-25T06:00:00Z
-```
-
-As you can see we started obtaining **today's** then subtracted one day to get **yesterday's**, and because this date
-will be used as the `start`, all fields after `DAYS` were truncated to zero.
-
-Finally, the date was converted to UTC resulting in **2023-05-25T06:00:00Z** it has **06:00:00** because
-**2023-05-25T00:00:00** in Mexico is **2023-05-25T06:00:00Z** in UTC.
-
-Internally the SDK will perform the following operations:
-
-1. Use 2023-05-25T06:00:00Z as `start`
-2. Create a copy of `start` named `end` and add **23:59:59**
-
-So the time range will end up like:
-
-`start`: 2023-05-25T06:00:00Z < --- >`end`: 2023-05-26T05:59:59Z
-
-Which in **UTC-6** is equivalent to:
-
-`start`: 2023-05-25T00:00:00 < --- >`end`: 2023-05-25T23:59:59
-
-#### What about last extraction date?
-
-When you use `getLastExtractionDate(rookDataType: HCRookDataType)` the returned ZonedDateTime is the same you provided
-when retrieving health data.
-
-Using the example from [above](#retrieving-health-data-in-utc); `getLastExtractionDate(rookDataType: HCRookDataType)`
-will return **2023-05-25T06:00:00Z** which as you can notice, is already in UTC.
-
-So, to retrieve health data from the following day all you need to do is add one day:
-
-```kotlin
-val date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
-  .plusDays(1)
-```
-
-* If your users are more likely to change locations (timezones), you may have to instead convert the result
-  of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's timezone, add one day, truncate (if necessary)
-  and convert again to UTC.
 
 ## Other resources
 
