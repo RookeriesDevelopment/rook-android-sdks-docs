@@ -291,7 +291,7 @@ There are 2 types of health data **Summaries** and **Events**.
 
 #### Retrieving health data in UTC
 
-All health data types require a `ZonedDateTime` instance if the date (summary) or datetime (event) you want to retrieve
+All health data types require a ZonedDateTime instance if the date (summary) or datetime (event) you want to retrieve
 data from. When using `get_health_data_type(date: ZonedDateTime)` the provided `date` is used to create a range
 between `date` (start) and the end of the day (end). This can become tricky specially with
 all the different timezones your users may be in.
@@ -403,12 +403,11 @@ day and cannot be older than 29 days. See the examples below:
 | 2023-01-08   | 2022-11-01    | No, the date is older than 29 days |
 | 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old        |
 
-To get health data, call `get_data_type` and provide a `ZonedDateTime` instance of the day you want to retrieve the data
+To get health data, call `get_data_type` and provide a ZonedDateTime instance of the day you want to retrieve the data
 from.
 
 For example, if you want to get yesterday's sleep summary, call `getSleepSummary`. It will return
-an `SleepSummary` instance or throw an exception if an error happens
-or if there is no sleep data on that day.
+an `SleepSummary` instance or throw an exception if an error happens.
 
 ```kotlin
 fun getSleepSummary() {
@@ -433,18 +432,17 @@ fun getSleepSummary() {
 
 Health Connect does not allow retrieving data on background, so every time your users open your app
 you should retrieve the data manually to help you retrieve the data of the days the user did not
-open your app. We store in preferences the last date data was retrieved (even if that attempt
-resulted in no data being found).
+open your app. We store in preferences the last date data was retrieved.
 
 Call `getLastExtractionDate(rookDataType: HCRookDataType)` providing a `HCRookDataType`, e.g. if you want to retrieve
 the last date a `SleepSummary` was retrieved use `HCRookDataType.SLEEP_SUMMARY`.
 
-It will return a `ZonedDateTime` instance.
+It will return a ZonedDateTime instance.
 
-Considerations:
+Rules:
 
 * The returned ZonedDateTime will be in UTC.
-* The returned ZonedDateTime is the same you provided when retrieving health data.
+* The returned ZonedDateTime will be the same you provided when retrieving health data.
 * If the stored date is older than 29 days it will be ignored it and a DateNotFoundException will be thrown.
 * If your users are more likely to change locations (timezones), you may have to instead convert the result
   of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's new timezone, add one day, truncate (if
@@ -475,6 +473,99 @@ fun recoverLostDays() {
     while (date.isBefore(today)) {
       try {
         val result = manager.getSleepSummary(date)
+
+        // Success
+      } catch (e: Exception) {
+        // Manage error
+      }
+
+      date = date.plusDays(1)
+    }
+  }
+}
+```
+
+#### Retrieve events
+
+To retrieve any type of event, you need to provide a date. This date cannot be older than 29 days. See the examples
+below:
+
+| Current date | Provided date | Is valid?                          |
+|--------------|---------------|------------------------------------|
+| 2023-01-08   | 2023-01-08    | Yes, the date is from today        |
+| 2023-01-08   | 2023-01-07    | Yes, the date is from yesterday    |
+| 2023-01-08   | 2022-11-01    | No, the date is older than 29 days |
+| 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old        |
+
+To get health data, call `get_data_type` and provide a ZonedDateTime instance of the day you want to retrieve the data
+from.
+
+For example, if you want to get today's physical events, call `getPhysicalEvents`. It will return
+an `List<HCPhysicalEvent>` or throw an exception if an error happens or if there is no sleep data on that day.
+
+```kotlin
+fun getPhysicalEvents() {
+  scope.launch {
+    try {
+      val date = ZonedDateTime.now()
+        .truncatedTo(ChronoUnit.DAYS)
+        .withZoneSameInstant(ZoneId.of("UTC"))
+
+      val result = manager.getPhysicalEvents(date)
+
+      // Success
+    } catch (e: Exception) {
+      // Manage error
+    }
+  }
+}
+```
+
+##### Keeping track of the last date an event was retrieved
+
+Health Connect does not allow retrieving data on background, so every time your users open your app
+you should retrieve the data manually to help you retrieve the data of the days the user did not
+open your app. We store in preferences the last date data was retrieved.
+
+Call `getLastExtractionDate(rookDataType: HCRookDataType)` providing a `HCRookDataType`, e.g. if you want to retrieve
+the last date a `PhysicalEvent` was retrieved use `HCRookDataType.PHYSICAL_EVENT`.
+
+It will return a ZonedDateTime instance.
+
+Rules:
+
+* The returned ZonedDateTime will be in UTC.
+* The returned ZonedDateTime will be equal to the end date of the last event found in the past.
+* If the stored date is older than 29 days it will be ignored it and a DateNotFoundException will be thrown.
+* If your users are more likely to change locations (timezones), you may have to instead convert the result
+  of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's new timezone, add one day, truncate (if
+  necessary) and convert again to UTC.
+
+##### Last extraction date of a physical event example
+
+Let's suppose that one of your users opens the app on `2023-01-10`, the app then retrieves physical events from
+today (`2023-01-10`) with `getPhysicalEvents`.
+
+Then the user forgets to open the app until `2023-01-15`, then you'll
+call `getLastExtractionDate(rookDataType: HCRookDataType)`it will return `2023-01-10` in a ZonedDateTime instance. Now,
+in a loop, you can recover data from the days the user did not open the app (`2023-01-10` to `2023-01-14`).
+
+An example using physical events is detailed below:
+
+```kotlin
+fun recoverLostDays() {
+  scope.launch {
+    val today = ZonedDateTime.now()
+      .truncatedTo(ChronoUnit.DAYS)
+      .withZoneSameInstant(ZoneId.of("UTC"))
+
+    var date = manager.getLastExtractionDate(HCRookDataType.PHYSICAL_EVENT)
+
+    // date = date.plusDays(1) Not necessary the returned date belongs to the last event found
+
+    while (date.isBefore(today)) {
+      try {
+        val result = manager.getPhysicalEvents(date)
 
         // Success
       } catch (e: Exception) {
