@@ -340,8 +340,8 @@ where date is obtained with:
 
 ```kotlin
 val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
-  .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-26T00:00:00
-  .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-26T06:00:00Z
+  .truncatedTo(ChronoUnit.DAYS) // Today 2023-05-26T00:00:00
+  .withZoneSameInstant(ZoneId.of("UTC")) // Today 2023-05-26T06:00:00Z
 ```
 
 As you can see we started obtaining **today's**, and because we want health data from the entire day, all fields
@@ -372,7 +372,7 @@ call `get_health_data_type(date: ZonedDateTime)` where date is obtained with:
 
 ```kotlin
 val date = ZonedDateTime.now() // Today 2023-05-26T12:00:00
-  .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-26T18:00:00Z
+  .withZoneSameInstant(ZoneId.of("UTC")) // Today 2023-05-26T18:00:00Z
 ```
 
 In this case the date was only converted to UTC resulting in **2023-05-26T18:00:00Z** it has **18:00:00** because
@@ -501,7 +501,8 @@ To get health data, call `get_data_type` and provide a ZonedDateTime instance of
 from.
 
 For example, if you want to get today's physical events, call `getPhysicalEvents`. It will return
-an `List<HCPhysicalEvent>` or throw an exception if an error happens or if there is no sleep data on that day.
+an `List<HCPhysicalEvent>` or throw an exception if an error happens or `RecordsNotFoundException` if there is no
+physical data on that day.
 
 ```kotlin
 fun getPhysicalEvents() {
@@ -535,7 +536,7 @@ It will return a ZonedDateTime instance.
 Rules:
 
 * The returned ZonedDateTime will be in UTC.
-* The returned ZonedDateTime will be equal to the end date of the last event found in the past.
+* The returned ZonedDateTime will be equal to the date of the last event found.
 * If the stored date is older than 29 days it will be ignored it and a DateNotFoundException will be thrown.
 * If your users are more likely to change locations (timezones), you may have to instead convert the result
   of `getLastExtractionDate(rookDataType: HCRookDataType)` to your user's new timezone, add one day, truncate (if
