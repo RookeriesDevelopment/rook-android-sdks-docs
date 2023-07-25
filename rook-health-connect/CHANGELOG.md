@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+
+* When retrieving events if the Event has no data `RecordsNotFoundException` will be thrown.
+* Body pillar events will be divided in intervals of 1 hour.
+* `lastExtractionDate` will follow a different set of rules for Summaries and Events,
+  see [Keeping track of the last date a summary was retrieved](README.md#keeping-track-of-the-last-date-a-summary-was-retrieved)
+  and [Keeping track of the last date an event was retrieved](README.md#keeping-track-of-the-last-date-an-event-was-retrieved)
+  for more details.
+
 ## 0.5.4
 
 * Fixed min values not calculated
@@ -37,8 +46,9 @@ Will use the `startTime` of the `ExerciseSessionRecord` they belong to.
 
 **New permissions**
 
-From this version onwards you need to include 4 new READ permissions (Check README to see the full list of permissions
-that you have to add to your manifest):
+From this version onwards you need to include 4 new READ permissions.
+Check [Android configuration](README.md#android-configuration) to see the full list of permissions
+that you have to add to your manifest:
 
 * READ_RESPIRATORY_RATE
 * READ_NUTRITION
@@ -52,7 +62,8 @@ the `permissions` functions won't work.
 
 **New timezone requirements**
 
-The ZonedDateTime object provided when requesting health data must be in UTC, see README `Timezones` section for more
+The ZonedDateTime object provided when requesting health data must be in UTC,
+see [Retrieving health data in UTC](README.md#retrieving-health-data-in-utc) for more
 details.
 
 **User info**
