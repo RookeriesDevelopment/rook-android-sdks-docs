@@ -48,6 +48,16 @@ the [rook-auth](https://mvnrepository.com/artifact/com.rookmotion.android/rook-a
 
 ### Android configuration
 
+In your build.gradle (app) set your min and target sdk version like below:
+
+```groovy
+minSdk 26
+targetSdk 33
+```
+
+* This SDK will only work with devices of a minSdk 28 or later. The `minSdk 26` is to keep
+  compatibility with other Rook SDKs that can be used with older SDKs.
+
 In your **AndroidManifest.xml**, add a query for Health Connect:
 
 ```xml
@@ -88,8 +98,15 @@ Then declare the health permissions used by this SDK:
 <uses-permission android:name="android.permission.health.READ_POWER" />
 ```
 
-Finally, inside the Activity that you use to display your app's privacy policy, add an
-intent filter for the Health Connect permissions action:
+### Privacy policy
+
+Health Connect requires a privacy policy where you inform your users how you will handle and use their data.
+
+To comply with this you'll need an intent filter. You can use a dedicated Activity, or if you are using a **Single
+activity architecture**, you can use Deeplinks. You can find an example of the first approach in our demo app.
+
+Inside the Activity that you use to display your app's privacy policy, add an intent filter for the Health Connect
+permissions action:
 
 ```xml
 
@@ -101,16 +118,6 @@ intent filter for the Health Connect permissions action:
     </intent-filter>
 </activity>
 ```
-
-In your build.gradle (app) set your min and target sdk version like below:
-
-```groovy
-minSdk 26
-targetSdk 33
-```
-
-* This SDK will only work with devices of a minSdk 28 or later. The `minSdk 26` is to keep
-  compatibility with other Rook SDKs that can be used with older SDKs.
 
 ### Logging
 
@@ -139,14 +146,6 @@ val manager = RookHealthConnectManager(context)
 **WARNING:**
 
 * Before creating any instances, check [availability](#availability).
-
-### Privacy policy
-
-Health Connect requires a privacy policy where you inform your users how you will handle and use their data.
-
-In the [Android configuration](#android-configuration) section an intent filter was added to listen
-when your app is launched from said intent. You can use a dedicated Activity, or if you are using a
-**Single activity architecture**, you can use Deeplink. You can find an example of the first approach in our demo app.
 
 ### Availability
 
@@ -254,7 +253,7 @@ fun getUserInfo() {
 ```
 
 All properties (except for `dateTime` and `sourceOfData`) are nullable because there will be cases where we won't be
-able to extract such information, in those cases you can check the if the properties are null, and change them (all
+able to extract such information, in those cases you can check if the properties are null, and change them (all
 nullable properties are also mutable) before enqueuing your HCUserInfo
 to [rook-transmission](https://mvnrepository.com/artifact/com.rookmotion.android/rook-transmission).
 
@@ -307,9 +306,9 @@ where date is obtained with:
 
 ```kotlin
 val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
-  .minusDays(1) // Yesterday 2023-05-25T15:12:20
-  .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-25T00:00:00
-  .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-25T06:00:00Z
+    .minusDays(1) // Yesterday 2023-05-25T15:12:20
+    .truncatedTo(ChronoUnit.DAYS) // Yesterday 2023-05-25T00:00:00
+    .withZoneSameInstant(ZoneId.of("UTC")) // Yesterday 2023-05-25T06:00:00Z
 ```
 
 As you can see we started obtaining **today's** then subtracted one day to get **yesterday's**, and because we want
@@ -340,8 +339,8 @@ where date is obtained with:
 
 ```kotlin
 val date = ZonedDateTime.now() // Today 2023-05-26T15:12:20
-  .truncatedTo(ChronoUnit.DAYS) // Today 2023-05-26T00:00:00
-  .withZoneSameInstant(ZoneId.of("UTC")) // Today 2023-05-26T06:00:00Z
+    .truncatedTo(ChronoUnit.DAYS) // Today 2023-05-26T00:00:00
+    .withZoneSameInstant(ZoneId.of("UTC")) // Today 2023-05-26T06:00:00Z
 ```
 
 As you can see we started obtaining **today's**, and because we want health data from the entire day, all fields
@@ -372,7 +371,7 @@ call `get_health_data_type(date: ZonedDateTime)` where date is obtained with:
 
 ```kotlin
 val date = ZonedDateTime.now() // Today 2023-05-26T12:00:00
-  .withZoneSameInstant(ZoneId.of("UTC")) // Today 2023-05-26T18:00:00Z
+    .withZoneSameInstant(ZoneId.of("UTC")) // Today 2023-05-26T18:00:00Z
 ```
 
 In this case the date was only converted to UTC resulting in **2023-05-26T18:00:00Z** it has **18:00:00** because
@@ -461,27 +460,27 @@ An example using sleep summaries is detailed below:
 
 ```kotlin
 fun recoverLostDays() {
-  scope.launch {
-    val today = ZonedDateTime.now()
-      .truncatedTo(ChronoUnit.DAYS)
-      .withZoneSameInstant(ZoneId.of("UTC"))
+    scope.launch {
+        val today = ZonedDateTime.now()
+            .truncatedTo(ChronoUnit.DAYS)
+            .withZoneSameInstant(ZoneId.of("UTC"))
 
-    var date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
+        var date = manager.getLastExtractionDate(HCRookDataType.SLEEP_SUMMARY)
 
-    date = date.plusDays(1)
+        date = date.plusDays(1)
 
-    while (date.isBefore(today)) {
-      try {
-        val result = manager.getSleepSummary(date)
+        while (date.isBefore(today)) {
+            try {
+                val result = manager.getSleepSummary(date)
 
-        // Success
-      } catch (e: Exception) {
-        // Manage error
-      }
+                // Success
+            } catch (e: Exception) {
+                // Manage error
+            }
 
-      date = date.plusDays(1)
+            date = date.plusDays(1)
+        }
     }
-  }
 }
 ```
 
@@ -506,19 +505,19 @@ physical data on that day.
 
 ```kotlin
 fun getPhysicalEvents() {
-  scope.launch {
-    try {
-      val date = ZonedDateTime.now()
-        .truncatedTo(ChronoUnit.DAYS)
-        .withZoneSameInstant(ZoneId.of("UTC"))
+    scope.launch {
+        try {
+            val date = ZonedDateTime.now()
+                .truncatedTo(ChronoUnit.DAYS)
+                .withZoneSameInstant(ZoneId.of("UTC"))
 
-      val result = manager.getPhysicalEvents(date)
+            val result = manager.getPhysicalEvents(date)
 
-      // Success
-    } catch (e: Exception) {
-      // Manage error
+            // Success
+        } catch (e: Exception) {
+            // Manage error
+        }
     }
-  }
 }
 ```
 
