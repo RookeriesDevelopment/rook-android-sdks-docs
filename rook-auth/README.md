@@ -41,10 +41,10 @@ Available levels:
 
 You must check authorization every time your app starts or before using other rook SDKs.
 
-Create an instance of `AuthorizationProvider` providing a context, and apiUrl without https.
+Create an instance of `AuthorizationProvider` providing a context.
 
 ```kotlin
-val provider = AuthorizationProvider(context, "api.rook-connect.dev")
+val provider = AuthorizationProvider(context)
 ```
 
 Call `getAuthorization` providing your client UUID, this will ask the server for a token which

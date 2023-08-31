@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+* Removed auth url requirements
+
 ## 0.3.1
 
 * Fixed logs duplication
