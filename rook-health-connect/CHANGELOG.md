@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.3
+
+* Optimized calls to the Health Connect API for all summaries and events
+* Updated rook-auth to 0.4.0
+
 ## 0.6.0
 
 * When retrieving events if the Event has no data `RecordsNotFoundException` will be thrown.
