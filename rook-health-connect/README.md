@@ -13,20 +13,20 @@ of Rook Extraction, a series of SDKs dedicated to extracting Health Data from a 
 * Check for Health Connect APK availability.
 * Check and request permissions.
 * Retrieve health data:
-  * [Sleep Summary](https://docs.tryrook.io/docs/DataStructure/SleepHealth#summaries)
-  * [Physical Summary](https://docs.tryrook.io/docs/DataStructure/PhysicalHealth#summaries)
-  * Physical Event
-  * [Body Summary](https://docs.tryrook.io/docs/DataStructure/BodyHealth#summaries)
-  * Blood Glucose Event
-  * Blood Pressure Event
-  * Body Metrics Event
-  * Heart Rate Event
-  * Hydration Event
-  * Mood Event
-  * Nutrition Event
-  * Oxygenation Event
-  * Stress Event
-  * Temperature Event
+    * [Sleep Summary](https://docs.tryrook.io/docs/ROOKConnect/DataStructure/#sleep-health)
+    * [Physical Summary](https://docs.tryrook.io/docs/ROOKConnect/DataStructure/#physical-health)
+    * [Physical Event](https://docs.tryrook.io/docs/ROOKConnect/DataStructure/#physical-health)
+    * [Body Summary](https://docs.tryrook.io/docs/ROOKConnect/DataStructure/#body-health)
+    * Blood Glucose Event
+    * Blood Pressure Event
+    * Body Metrics Event
+    * Heart Rate Event
+    * Hydration Event
+    * Mood Event
+    * Nutrition Event
+    * Oxygenation Event
+    * Stress Event
+    * Temperature Event
 
 ## Installation
 
@@ -554,27 +554,27 @@ An example using physical events is detailed below:
 
 ```kotlin
 fun recoverLostDays() {
-  scope.launch {
-    val today = ZonedDateTime.now()
-      .truncatedTo(ChronoUnit.DAYS)
-      .withZoneSameInstant(ZoneId.of("UTC"))
+    scope.launch {
+        val today = ZonedDateTime.now()
+            .truncatedTo(ChronoUnit.DAYS)
+            .withZoneSameInstant(ZoneId.of("UTC"))
 
-    var date = manager.getLastExtractionDate(HCRookDataType.PHYSICAL_EVENT)
+        var date = manager.getLastExtractionDate(HCRookDataType.PHYSICAL_EVENT)
 
-    // date = date.plusDays(1) Not necessary the returned date belongs to the last event found
+        // date = date.plusDays(1) Not necessary the returned date belongs to the last event found
 
-    while (date.isBefore(today)) {
-      try {
-        val result = manager.getPhysicalEvents(date)
+        while (date.isBefore(today)) {
+            try {
+                val result = manager.getPhysicalEvents(date)
 
-        // Success
-      } catch (e: Exception) {
-        // Manage error
-      }
+                // Success
+            } catch (e: Exception) {
+                // Manage error
+            }
 
-      date = date.plusDays(1)
+            date = date.plusDays(1)
+        }
     }
-  }
 }
 ```
 
