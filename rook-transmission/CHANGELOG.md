@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+
+* Added `uploadUserTimeZone` to update users timezone information
+* `UploadException` was moved to `com.rookmotion.rook.transmission.domain.exception`
+
 ## 0.4.3
 
 * Updated rook-auth to 0.4.0

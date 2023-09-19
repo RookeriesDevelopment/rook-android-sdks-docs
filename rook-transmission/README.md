@@ -152,6 +152,31 @@ fun uploadAll() {
 }
 ```
 
+### Updating user timezone
+
+To update the timezone information of your users call `uploadUserTimeZone` and provide:
+
+* **timezone** A tz database string describing the area and location, e.g. America/New_York.
+* **offset** An integer describing the UTC offset hours, must be in the range of -18 to 18 (inclusive).
+
+**Example using rook-health-connect**
+
+```kotlin
+fun updateUserTimeZone() {
+  val userTimeZone = rookHealthConnectManager.getUserTimeZone()
+    
+    try {
+      rookTransmissionManager.uploadUserTimeZone(
+        userTimeZone.timezone,
+        userTimeZone.offset
+      )
+      // Success
+    } catch (e: Exception) {
+      // Manage error
+    }
+}
+```
+
 ## Other resources
 
 * See a complete list of `RookTransmissionManager` functions in
