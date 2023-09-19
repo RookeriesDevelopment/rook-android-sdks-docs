@@ -234,49 +234,15 @@ fun openHealthConnectSettings() {
 }
 ```
 
-### Retrieving user information
+### Retrieving user timezone
 
-To retrieve user information call `getUserInfo` It will return a HCUserInfo instance.
+To retrieve time zone information call `getUserTimeZone` it will return a `UserTimeZone` instance.
 
 ```kotlin
-fun getUserInfo() {
-    scope.launch {
-        try {
-            val result = manager.getUserInfo(date)
-
-            // Success
-        } catch (e: Exception) {
-            // Manage error
-        }
-    }
-}
-```
-
-All properties (except for `dateTime` and `sourceOfData`) are nullable because there will be cases where we won't be
-able to extract such information, in those cases you can check if the properties are null, and change them (all
-nullable properties are also mutable) before enqueuing your HCUserInfo
-to [rook-transmission](https://mvnrepository.com/artifact/com.rookmotion.android/rook-transmission).
-
-```text
-fun fillNullProperties(userinfo: HCUserInfo) {
-    if (userinfo.userInformation.userDemographics.sex == null) {
-        userinfo.userInformation.userDemographics.sex = // Provide sex 
-    }
-
-    if (userinfo.userInformation.userDemographics.city == null) {
-        userinfo.userInformation.userDemographics.city = // Provide city 
-    }
-
-    if (userinfo.userInformation.userDemographics.education == null) {
-        userinfo.userInformation.userDemographics.education = // Provide education 
-    }
-
-    if (userinfo.userInformation.userBodyMetrics.dateOfBirth == null) {
-        userinfo.userInformation.userBodyMetrics.dateOfBirth = // Provide dateOfBirth 
-    }
-
-    // Enqueue with rook-transmission
-}
+data class UserTimeZone(
+  val timezone: String, //  A tz database string describing the area and location.
+  val offset: Int,      // An integer describing the UTC offset hours
+)
 ```
 
 ### Retrieving health data

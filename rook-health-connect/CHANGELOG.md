@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.4
+
+* Added Time Zone extraction, see [Retrieving user timezone](README.md#retrieving-user-timezone) for more information.
+
 ## 0.6.3
 
 * Optimized calls to the Health Connect API for all summaries and events
