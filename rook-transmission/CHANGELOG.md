@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.5.1
+
+* Improved security of `uploadUserTimeZone`.
+
 ## 0.5.0
 
-* Added `uploadUserTimeZone` to update users timezone information
+* Added `uploadUserTimeZone` to update users timezone, see [Updating user timezone](README.md#updating-user-timezone) for more information.
 * `UploadException` was moved to `com.rookmotion.rook.transmission.domain.exception`
 
 ## 0.4.3
