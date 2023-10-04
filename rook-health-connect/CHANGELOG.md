@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.0
+
+* Authorization it's now managed by this SDK (dependency on **rook-auth** is no longer required),
+  see [Authorization](README.md#authorization) for more information.
+* Changed `RookHealthConnectManager` constructor parameters,
+  see [RookHealthConnectManager](README.md#rookhealthconnectmanager) for more information.
+* Added `RookHealthConnectEnvironment` to configure internal behaviour, see [Environment](README.md#environment) for
+  more information.
+* Fixed documentation typos.
+
 ## 0.6.4
 
 * Added Time Zone extraction, see [Retrieving user timezone](README.md#retrieving-user-timezone) for more information.
@@ -45,16 +55,16 @@ Will use the `startTime` of the `ExerciseSessionRecord` they belong to.
 **Migrated to data matrix 2.0**
 
 * Added events extraction
-  * Blood Glucose Event
-  * Blood Pressure Event
-  * Body Metrics Event
-  * Heart Rate Event
-  * Hydration Event
-  * Mood Event
-  * Nutrition Event
-  * Oxygenation Event
-  * Stress Event
-  * Temperature Event
+    * Blood Glucose Event
+    * Blood Pressure Event
+    * Body Metrics Event
+    * Heart Rate Event
+    * Hydration Event
+    * Mood Event
+    * Nutrition Event
+    * Oxygenation Event
+    * Stress Event
+    * Temperature Event
 
 **New permissions**
 
