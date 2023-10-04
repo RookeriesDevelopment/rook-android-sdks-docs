@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+
+* Authorization it's now managed by this SDK (dependency on **rook-auth** is no longer required),
+  see [Authorization](README.md#authorization) for more information.
+* Changed `RookTransmissionManager` constructor parameters,
+  see [RookTransmissionManager](README.md#rooktransmissionmanager) for more information.
+* Added `RookHealthConnectEnvironment` to configure internal behaviour, see [Environment](README.md#environment) for
+  more information.
+
 ## 0.5.1
 
 * Improved security of `uploadUserTimeZone`.
