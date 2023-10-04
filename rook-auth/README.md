@@ -1,5 +1,9 @@
 # Rook authorization SDK
 
+> [!WARNING]  
+> This SDK has been deprecated and won't receive updates. All SDKs which had a dependency on rook-auth were
+> updated to manage their own authorization.
+
 This is the main SDK required by all rook SDKs to enable their usage.
 
 ## Features
