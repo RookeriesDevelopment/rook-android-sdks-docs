@@ -1,13 +1,14 @@
 # Changelog
 
-## 0.6.0
+## 0.7.0
 
 * Authorization it's now managed by this SDK (dependency on **rook-auth** is no longer required),
-  see [Authorization](README.md#authorization) for more information.
+  see [Initialization](README.md#initialization) for more information.
+* Changed parameter to enable logs from `String` to `Boolean`, see [Logging](README.md#logging) for more information.
+* Added `RookTransmissionEnvironment` to configure internal behaviour, see [Environment](README.md#environment) for
+  more information.
 * Changed `RookTransmissionManager` constructor parameters,
   see [RookTransmissionManager](README.md#rooktransmissionmanager) for more information.
-* Added `RookHealthConnectEnvironment` to configure internal behaviour, see [Environment](README.md#environment) for
-  more information.
 
 ## 0.5.1
 
@@ -15,7 +16,8 @@
 
 ## 0.5.0
 
-* Added `uploadUserTimeZone` to update users timezone, see [Updating user timezone](README.md#updating-user-timezone) for more information.
+* Added `uploadUserTimeZone` to update users timezone, see [Updating user timezone](README.md#updating-user-timezone)
+  for more information.
 * `UploadException` was moved to `com.rookmotion.rook.transmission.domain.exception`
 
 ## 0.4.3
