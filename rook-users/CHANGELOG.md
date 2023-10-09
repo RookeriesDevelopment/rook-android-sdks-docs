@@ -1,13 +1,14 @@
 # Changelog
 
-## 0.4.0
+## 0.5.0
 
 * Authorization it's now managed by this SDK (dependency on **rook-auth** is no longer required),
-  see [Authorization](README.md#authorization) for more information.
-* Changed `RookTransmissionManager` constructor parameters,
-  see [RookUsersManager](README.md#rookusersmanager) for more information.
-* Added `RookHealthConnectEnvironment` to configure internal behaviour, see [Environment](README.md#environment) for
+  see [Initialization](README.md#initialization) for more information.
+* Changed parameter to enable logs from `String` to `Boolean`, see [Logging](README.md#logging) for more information.
+* Added `RookUsersEnvironment` to configure internal behaviour, see [Environment](README.md#environment) for
   more information.
+* Changed `RookUsersManager` constructor parameters, see [RookUsersManager](README.md#rookusersmanager) for more
+  information.
 
 ## 0.3.2
 
