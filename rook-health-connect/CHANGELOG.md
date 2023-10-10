@@ -10,6 +10,9 @@
 * Changed `RookHealthConnectManager` constructor parameters,
   see [RookHealthConnectManager](README.md#rookhealthconnectmanager) for more information.
 * Fixed documentation typos.
+* Removed `getPhysicalStressEvents` and `getBodyMoodEvents` due to always being empty. Will be added in the future if
+  Health Connect adds support for the data they require (The classes `HCMoodEvent` and `HCStressEvent` won't be
+  removed).
 
 ## 0.6.4
 
