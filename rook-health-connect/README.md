@@ -125,8 +125,7 @@ information [Here](https://developer.android.com/health-and-fitness/guides/healt
 ### Environment
 
 The `RookHealthConnectEnvironment` enum allows to quickly configure the behaviour of **rook-health-connect**, e.g. the
-api
-used to communicate with ROOK servers.
+api used to communicate with ROOK servers.
 
 Available environments:
 
