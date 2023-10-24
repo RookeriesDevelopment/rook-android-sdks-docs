@@ -49,7 +49,7 @@ In your build.gradle (app) set your min and target sdk version like below:
 
 ```groovy
 minSdk 26
-targetSdk 33
+targetSdk 34
 ```
 
 * This SDK will only work with devices of a minSdk 28 or later. The `minSdk 26` is to keep
@@ -107,20 +107,39 @@ permissions action:
 
 ```xml
 
-<activity android:name=".ui.health_connect.HCPrivacyPolicyActivity" android:enabled="true"
-          android:exported="true">
+<application>
+    <!-- For supported versions through Android 13, create an activity to show the rationale
+         of Health Connect permissions once users click the privacy policy link. -->
+    <activity android:name=".features.healthconnect.privacypolicy.HCPrivacyPolicyActivity"
+              android:enabled="true"
+              android:exported="true">
 
-    <intent-filter>
-        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
-    </intent-filter>
-</activity>
+        <intent-filter>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+        </intent-filter>
+    </activity>
+
+    <!-- For versions starting Android 14, create an activity alias to show the rationale 
+         of Health Connect permissions once users click the privacy policy link. -->
+    <activity-alias
+        android:name="ViewPermissionUsageActivity"
+        android:exported="true"
+        android:targetActivity=".features.healthconnect.privacypolicy.HCPrivacyPolicyActivity"
+        android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+            <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+        </intent-filter>
+    </activity-alias>
+</application>
 ```
 
 #### Request data access
 
 When you are developing with the Health Connect SDK data access is unrestricted. In order to have data access when your
 app is launched to the PlayStore you MUST complete the Developer Declaration Form, more
-information [Here](https://developer.android.com/health-and-fitness/guides/health-connect/frequently-asked-questions#request-access).
+information [Here](https://developer.android.com/health-and-fitness/guides/health-connect/publish/request-access).
 
 ### Environment
 
@@ -223,16 +242,18 @@ val rookHealthConnectManager = RookHealthConnectManager(context)
 
 #### Check permissions
 
-There are dedicated functions for each [Health Pillar](https://docs.tryrook.io/docs/Definitions#health-data-pillars)
-(Sleep, Physical, and Body) to check permissions. These functions follow the convention: `has_data_type_Permissions`
+To check permissions call `checkPermissions` and provide a `HCPermission`, available permissions:
 
-You can also call `hasAllPermissions` to check if your app has all the permissions required to
-extract data from all health pillars.
+* SLEEP - [Sleep Health](https://docs.tryrook.io/docs/Definitions/#sleep-health-data-pillar) Data Pillar permissions.
+* PHYSICAL - [Physical Health](https://docs.tryrook.io/docs/Definitions/#body-health-data-pillar) Data Pillar
+  permissions.
+* BODY - [Body Health](https://docs.tryrook.io/docs/Definitions/#body-health-data-pillar) Data Pillar permissions.
+* ALL - All Health Data Pillar permissions.
 
 ```kotlin
 fun checkPermissions() {
     scope.launch {
-        val result = rookHealthConnectManager.hasAllPermissions()
+        val result = rookHealthConnectManager.checkPermissions(HCPermission.ALL)
 
         if (result) {
             // The app has permissions.
@@ -245,23 +266,31 @@ fun checkPermissions() {
 
 #### Request permissions
 
-There are dedicated functions for each [Health Pillar](https://docs.tryrook.io/docs/Definitions#health-data-pillars)
-(Sleep, Physical and Body) to request permissions. These functions follow the
-convention: `request_data_type_Permissions`
+Before requesting permissions you need to register the `HCPermissionsRequestLauncher` with an activity (ComponentActivity) or
+fragment. Call `HCPermissionsRequestLauncher.register` providing an activity/fragment.
 
-You can also call `requestAllPermissions` and provide an `Activity` instance to request all health
-pillar permissions.
+The following block of code MUST be called before your activity/fragment reaches the `resume` state preferably as part
+of the `onCreate\onCreateView` function.
 
 ```kotlin
-fun requestPermissions(activity: Activity) {
-    val result = rookHealthConnectManager.requestAllPermissions(activity)
+HCPermissionsRequestLauncher.register(activity / fragment)
+```
 
-    if (result) {
-        // A request to Health Connect to open the permissions screen was sent.
-        // Health Connect can receive the request but refuse to open the permissions screen. In those cases, 'result' will also be true
-    } else {
-        // The request was not sent.
-    }
+To request permissions call `HCPermissionsRequestLauncher.launch` providing a `HCPermission`.
+
+```kotlin
+HCPermissionsRequestLauncher.launch(HCPermission.ALL)
+```
+
+**IMPORTANT**
+
+Remember to unregister your activity/fragment when you don't need to request permissions anymore. Preferably as part
+of the `onDestroy` function.
+
+```kotlin
+fun onDestroy() {
+    HCPermissionsRequestLauncher.unregister()
+    super.onDestroy()
 }
 ```
 
