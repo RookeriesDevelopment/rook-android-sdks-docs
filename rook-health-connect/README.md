@@ -55,6 +55,10 @@ targetSdk 34
 * This SDK will only work with devices of a minSdk 28 or later. The `minSdk 26` is to keep
   compatibility with other Rook SDKs that can be used with older SDKs.
 
+#### Obfuscation
+
+If you are using obfuscation consider the following:
+
 In your gradle.properties (Project level) add the following to disable R8 full mode:
 
 ```properties
@@ -74,7 +78,9 @@ If you want to enable full mode add the following rules to proguard-rules.pro:
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 ```
 
-In your **AndroidManifest.xml**, add a query for Health Connect:
+#### Manifest
+
+In your **AndroidManifest.xml** add a query for Health Connect
 
 ```xml
 

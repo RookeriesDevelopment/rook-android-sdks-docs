@@ -6,15 +6,16 @@
 
 This version will only compile against Android 14 (SDK 34). Please follow the steps to migrate
 
-1. Update your gradle version to 8.1.2  
+1. Update your gradle version to 8.1.2
 2. Update your `compileSdk` and `targetSdk` to 34
 3. Update your `sourceCompatibility`, `targetCompatibility` and `jvmTarget` to Java 17
 
 ### Changes
 
-* Permissions functions have changed, see [Permissions](README.md#permissions) for more information.
+* Permissions functions have changed, see [Check permissions](README.md#check-permissions) for more information.
 * Privacy policy configuration has changed, see [Privacy policy](README.md#privacy-policy) for more information.
 * Updated data access links, see [Privacy policy](README.md#request-data-access) for more information.
+* Added new obfuscation rules, see [Obfuscation](README.md#obfuscation) for more information.
 
 ## 0.8.0
 
