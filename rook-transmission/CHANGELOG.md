@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.0
+
+### Android 14
+
+This version will only compile against Android 14 (SDK 34). Please follow the steps to migrate
+
+1. Update your gradle version to 8.1.2
+2. Update your `compileSdk` and `targetSdk` to 34
+3. Update your `sourceCompatibility`, `targetCompatibility` and `jvmTarget` to Java 17
+
 ## 0.7.0
 
 * Authorization it's now managed by this SDK (dependency on **rook-auth** is no longer required),
