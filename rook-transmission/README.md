@@ -252,5 +252,5 @@ fun updateUserTimeZone() {
 
 ## Other resources
 
-* See a complete list of `RookTransmissionManager` functions in
-  the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-transmission/latest/com/rookmotion/rook/transmission/RookTransmissionManager.html)
+* See a complete list of `RookTransmissionManager` functions in the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-transmission/latest/com/rookmotion/rook/transmission/RookTransmissionManager.html)
+* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin)

@@ -657,5 +657,5 @@ fun recoverLostDays() {
 
 ## Other resources
 
-* See a complete list of `RookHealthConnectManager` functions in
-  the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-health-connect/latest/com/rookmotion/rook/health_connect/RookHealthConnectManager.html)
+* See a complete list of `RookHealthConnectManager` functions in the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-health-connect/latest/com/rookmotion/rook/health_connect/RookHealthConnectManager.html)
+* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin) 

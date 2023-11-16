@@ -196,3 +196,8 @@ fun remove() {
 
 The first time your users use this SDK they MUST have an active internet connection otherwise
 the request will fail and the userID won't be registered or stored.
+
+## Other resources
+
+* See a complete list of `RookUsersManager` functions in the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-users/latest/com/rookmotion/rook/users/RookUsersManager.html)
+* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin)
