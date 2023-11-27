@@ -1,8 +1,14 @@
 # Changelog
 
+## 0.10.0
+
+* Added setUserID to configure the user of HC summaries and events, see [Initialization](README.md#initialization) for
+  more information.
+* Removed userID parameter in `RookHealthConnectConfiguration.initRookHealthConnect()`
+
 ## 0.9.6
 
-* When requesting permissions the Health Connect datasource status will be changed to active. 
+* When requesting permissions the Health Connect datasource status will be changed to active.
 
 ## 0.9.5
 

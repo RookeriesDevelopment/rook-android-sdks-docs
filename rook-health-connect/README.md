@@ -203,6 +203,9 @@ To initialize this SDK call `RookHealthConnectConfiguration.initRookHealthConnec
 * [Environment](#environment)
 * [EnableLogs](#logging)
 
+Then to set the userID call `RookHealthConnectConfiguration.setUserID`, this will enable data source updates and will
+configure the owner of each summary en event when extracted.
+
 ```kotlin
 val environment = if (BuildConfig.DEBUG) RookHealthConnectEnvironment.SANDBOX
 else RookHealthConnectEnvironment.PRODUCTION
@@ -212,6 +215,7 @@ val enableLogs = BuildConfig.DEBUG
 val result = RookHealthConnectConfiguration.initRookHealthConnect(
     context = context,
     clientUUID = clientUUID,
+    clientPassword = clientPassword,
     environment = environment,
     enableLogs = enableLogs,
 )
@@ -219,6 +223,8 @@ val result = RookHealthConnectConfiguration.initRookHealthConnect(
 result.fold(
     {
         // Initialized
+        // Needed to enable data source updates and to configure the owner of HC summaries and events 
+        RookHealthConnectConfiguration.setUserID(userID)
     },
     {
         val error = "InitializationError: ${it.localizedMessage}"
@@ -291,7 +297,8 @@ fun checkPermissions() {
 
 #### Request permissions
 
-Before requesting permissions you need to register the `HCPermissionsRequestLauncher` with an activity (ComponentActivity) or
+Before requesting permissions you need to register the `HCPermissionsRequestLauncher` with an activity (
+ComponentActivity) or
 fragment. Call `HCPermissionsRequestLauncher.register` providing an activity/fragment.
 
 The following block of code MUST be called before your activity/fragment reaches the `resume` state preferably as part
@@ -657,5 +664,7 @@ fun recoverLostDays() {
 
 ## Other resources
 
-* See a complete list of `RookHealthConnectManager` functions in the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-health-connect/latest/com/rookmotion/rook/health_connect/RookHealthConnectManager.html)
-* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin) 
+* See a complete list of `RookHealthConnectManager` functions in
+  the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-health-connect/latest/com/rookmotion/rook/health_connect/RookHealthConnectManager.html)
+* Download and compile the demo application from
+  our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin) 
