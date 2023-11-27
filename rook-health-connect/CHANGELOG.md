@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.6
+
+* When requesting permissions the Health Connect datasource status will be changed to active. 
+
 ## 0.9.5
 
 * Optimized the number of calls to Health Connect required to extract Temperature Events.
