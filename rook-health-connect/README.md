@@ -199,7 +199,8 @@ val enableLogs = BuildConfig.DEBUG
 To initialize this SDK call `RookHealthConnectConfiguration.initRookHealthConnect` and provide:
 
 * Context
-* [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
+* [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
 * [Environment](#environment)
 * [EnableLogs](#logging)
 

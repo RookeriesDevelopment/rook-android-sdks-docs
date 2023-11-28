@@ -12,7 +12,7 @@
 
 ## 0.9.6
 
-* When requesting permissions the Health Connect datasource status will be changed to active.
+* When requesting permissions the Health Connect data source status will be changed to active.
 
 ## 0.9.5
 

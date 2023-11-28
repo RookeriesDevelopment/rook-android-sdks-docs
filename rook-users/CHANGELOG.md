@@ -8,7 +8,7 @@
 
 ## 0.6.2
 
-* When registering a user the Health Connect datasource status will be changed to active.
+* When registering a user the Health Connect data source status will be changed to active.
 
 ## 0.6.0
 
