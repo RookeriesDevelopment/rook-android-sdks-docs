@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.0
+
+* Changed all `clientPassword` instances to `secretKey`.
+
 ## 0.10.0
 
 * Added setUserID to configure the user of HC summaries and events, see [Initialization](README.md#initialization) for
