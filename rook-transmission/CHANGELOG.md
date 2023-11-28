@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0
+
+* Changed all `clientPassword` instances to `secretKey`.
+
 ## 0.8.0
 
 ### Android 14
