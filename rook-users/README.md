@@ -100,10 +100,10 @@ else RookUsersEnvironment.PRODUCTION
 val enableLogs = BuildConfig.DEBUG
 
 val result = RookUsersConfiguration.initRookUsers(
-  context = context,
-  clientUUID = clientUUID,
-  environment = environment,
-  enableLogs = enableLogs
+    context = context,
+    clientUUID = clientUUID,
+    environment = environment,
+    enableLogs = enableLogs
 )
 
 result.fold(
@@ -120,7 +120,8 @@ result.fold(
 
 #### Recommendations
 
-When you call `initRookUsers` an HTTP request is made, so you should only call it once. We recommend to code this process in
+When you call `initRookUsers` an HTTP request is made, so you should only call it once. We recommend to code this
+process in
 your application's initialization, e.g. the splash screen.
 
 ### RookUsersManager
@@ -167,19 +168,16 @@ fun registerUser() {
 }
 ```
 
-### Removing registered users from preferences
+### Removing registered users
 
-This SDK already manages the case were you need to register a different userID (the new userID
-will replace the previous one in preferences).
-
-If you want to manually remove a userID call `removeUserFromPreferences` and provide the type of
-user you want to remove it will return a boolean indicating if the operation was successful.
+If you want to remove a userID from a data source call `deleteUserFromRook` and provide a userID and a
+userType. Once removed rook servers won't accept any health data from the specified data source.
 
 ```kotlin
-fun remove() {
+fun deleteUser() {
     scope.launch {
         try {
-            val result = rookUsersManager.removeUserFromPreferences(UserType.HEALTH_CONNECT)
+            rookUsersManager.deleteUserFromRook(userID, UserType.HEALTH_CONNECT)
 
             // Success
         } catch (e: Exception) {
@@ -189,9 +187,6 @@ fun remove() {
 }
 ```
 
-* `removeUserFromPreferences` will only delete from local storage, the user will remain registered
-  on server.
-
 ## Additional information
 
 The first time your users use this SDK they MUST have an active internet connection otherwise
@@ -199,5 +194,7 @@ the request will fail and the userID won't be registered or stored.
 
 ## Other resources
 
-* See a complete list of `RookUsersManager` functions in the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-users/latest/com/rookmotion/rook/users/RookUsersManager.html)
-* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin)
+* See a complete list of `RookUsersManager` functions in
+  the [Javadoc](https://www.javadoc.io/doc/com.rookmotion.android/rook-users/latest/com/rookmotion/rook/users/RookUsersManager.html)
+* Download and compile the demo application from
+  our [Repository](https://github.com/RookeriesDevelopment/rook-demo-app-kotlin)
