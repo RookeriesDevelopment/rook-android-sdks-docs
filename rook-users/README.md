@@ -129,14 +129,14 @@ your application's initialization, e.g. the splash screen.
 The `RookUsersManager` class contains all **rook-users** features, to create an instance provide:
 
 * Context
-* [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
-* [clientPassword](https://docsbeta.tryrook.io/docs/Definitions#client_password)
+* [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
 
 ```kotlin
 val rookUsersManager = RookUsersManager(
     context = context,
-    clientUUID = CLIENT_UUID,
-    clientPassword = CLIENT_PASSWORD,
+    clientUUID = clientUUID,
+    secretKey = secretKey,
 )
 ```
 

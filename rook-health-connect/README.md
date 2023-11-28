@@ -215,7 +215,7 @@ val enableLogs = BuildConfig.DEBUG
 val result = RookHealthConnectConfiguration.initRookHealthConnect(
     context = context,
     clientUUID = clientUUID,
-    clientPassword = clientPassword,
+    secretKey = secretKey,
     environment = environment,
     enableLogs = enableLogs,
 )
