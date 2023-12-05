@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.1
+
+* If the userID is not initialized a `UserNotInitializedException` will be thrown.
+
 ## 0.11.0
 
 * Changed all `clientPassword` instances to `secretKey`.
