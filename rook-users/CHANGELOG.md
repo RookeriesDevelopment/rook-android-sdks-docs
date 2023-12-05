@@ -2,7 +2,7 @@
 
 ## 0.7.0
 
-* Replaced `removeUserFromPreferences` with `deleteUserFromRook`, this function will delete from both server and
+* Replaced `removeUserFromPreferences` with `deleteUserFromRook`, this function will remove from both server and
   preferences, see [Removing registered users](README.md#removing-registered-users) for more information.
 * Changed all `clientPassword` instances to `secretKey`.
 
