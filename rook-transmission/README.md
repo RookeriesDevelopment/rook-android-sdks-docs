@@ -138,7 +138,7 @@ The `RookTransmissionManager` class contains all **rook-transmission** features,
 * Context
 * [UserID](https://docs.tryrook.io/docs/Definitions/#user_id)
 * [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
-* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#secret_key)
 
 ```kotlin
 val rookTransmissionManager = RookTransmissionManager(

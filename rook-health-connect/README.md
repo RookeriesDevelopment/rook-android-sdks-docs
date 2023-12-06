@@ -200,7 +200,7 @@ To initialize this SDK call `RookHealthConnectConfiguration.initRookHealthConnec
 
 * Context
 * [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
-* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#secret_key)
 * [Environment](#environment)
 * [EnableLogs](#logging)
 
