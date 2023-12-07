@@ -1,7 +1,7 @@
 # Rook Users SDK
 
 This SDK allows [clients](https://docs.tryrook.io/docs/Definitions/#client) to register
-their [Users](https://docs.tryrook.io/docs/Definitions/#User) in ROOK server.
+their [Users](https://docs.tryrook.io/docs/Definitions/#user) in ROOK server.
 
 ## Features
 
